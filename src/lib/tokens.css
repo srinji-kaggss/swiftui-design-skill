@@ -1,0 +1,69 @@
+/* ─── Design Tokens ──────────────────────────────────────────────
+   Flat deep-contrast palette inspired by Design-I-like.
+   Single warm accent, no gradients, no glassmorphism.
+   ─────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Palette — flat, high-contrast */
+  --ink: #0A0A0A;           /* near-black background */
+  --ink-2: #141414;         /* secondary surface */
+  --ink-3: #1E1E1E;         /* card surface */
+  --paper: #FAFAF7;         /* near-white text */
+  --paper-dim: #888888;     /* muted text */
+  --paper-faint: #444444;   /* borders, dividers */
+  --accent: #E8A700;        /* warm amber — the single accent */
+  --accent-dim: #8a6300;    /* accent on hover/active */
+
+  /* Typography */
+  --font-display: 'New York', 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  /* Spacing — 8pt grid */
+  --space-xs: 0.5rem;     /* 8 */
+  --space-sm: 1rem;       /* 16 */
+  --space-md: 2rem;       /* 32 */
+  --space-lg: 4rem;       /* 64 */
+  --space-xl: 8rem;       /* 128 */
+  --space-2xl: 12rem;     /* 192 */
+
+  /* Layout */
+  --max-width: 72rem;
+  --header-height: 4rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration: 0.6s;
+  --duration-slow: 1.2s;
+}
+
+/* ─── Reset ──────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
