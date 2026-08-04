@@ -1,41 +1,79 @@
 /* ─── Design Tokens ──────────────────────────────────────────────
-   Flat deep-contrast palette inspired by Design-I-like.
-   Single warm accent, no gradients, no glassmorphism.
+   Flat deep-contrast palette inspired by Design-I-like ("The Future
+   in Black"). Fluid type scale from afternow.co. Single warm accent.
+   No gradients, no glassmorphism, no web fonts.
    ─────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Palette — flat, high-contrast */
-  --ink: #0A0A0A;           /* near-black background */
-  --ink-2: #141414;         /* secondary surface */
-  --ink-3: #1E1E1E;         /* card surface */
-  --paper: #FAFAF7;         /* near-white text */
-  --paper-dim: #888888;     /* muted text */
-  --paper-faint: #444444;   /* borders, dividers */
-  --accent: #E8A700;        /* warm amber — the single accent */
-  --accent-dim: #8a6300;    /* accent on hover/active */
+  /* Palette — flat, high-contrast black + warm cream */
+  --ink:         #0A0A0A;
+  --ink-2:       #141414;
+  --ink-3:       #1E1E1E;
+  --paper:       #FAFAF7;
+  --paper-dim:   #888888;
+  --paper-faint: #333333;
+  --accent:      #E8A700;
+  --accent-dim:  #8C6400;
 
-  /* Typography */
+  /* Echo layer colours — the afternow pattern: stacked translucent
+     shapes behind the hero that react to scroll velocity */
+  --echo-1: #E8A700;
+  --echo-2: #C2410C;
+  --echo-3: #6B8A5E;
+
+  /* Typography — fluid clamp scale from afternow/lgwks */
   --font-display: 'New York', 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
 
-  /* Spacing — 8pt grid */
-  --space-xs: 0.5rem;     /* 8 */
-  --space-sm: 1rem;       /* 16 */
-  --space-md: 2rem;       /* 32 */
-  --space-lg: 4rem;       /* 64 */
-  --space-xl: 8rem;       /* 128 */
-  --space-2xl: 12rem;     /* 192 */
+  /* Fluid type scale */
+  --fs-display:  clamp(3.625rem, 2.06rem + 5.217vw, 6.625rem);
+  --fs-display-2: clamp(2.75rem, 1.38rem + 4.565vw, 5.375rem);
+  --fs-h1:       clamp(2.125rem, 1.016rem + 3.696vw, 4.25rem);
+  --fs-h2:       clamp(1.875rem, 1.092rem + 2.609vw, 3.375rem);
+  --fs-h3:       clamp(1.625rem, 1.038rem + 1.957vw, 2.75rem);
+  --fs-h4:       clamp(1.375rem, 0.918rem + 1.522vw, 2.25rem);
+  --fs-h5:       clamp(1.25rem,  0.989rem + 0.87vw,  1.75rem);
+  --fs-h6:       clamp(1.125rem, 0.995rem + 0.435vw, 1.375rem);
+  --fs-xl:       clamp(1.25rem,  1.12rem + 0.435vw,  1.5rem);
+  --fs-lg:       clamp(1.125rem, 1.06rem + 0.217vw,  1.25rem);
+  --fs-base:     clamp(1rem,     0.935rem + 0.217vw, 1.125rem);
+  --fs-md:       clamp(0.875rem, 0.81rem + 0.217vw,  1rem);
+  --fs-sm:       clamp(0.813rem, 0.78rem + 0.109vw,  0.875rem);
+  --fs-xs:       0.75rem;
 
-  /* Layout */
-  --max-width: 72rem;
-  --header-height: 4rem;
+  /* Spacing — 4px base grid */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+  --space-48: 12rem;
+
+  /* Semantic */
+  --space-section-y: clamp(3.375rem, 2.005rem + 4.565vw, 6rem);
+  --container-max:    72rem;
+  --container-gutter: clamp(1rem, 0.478rem + 1.739vw, 2rem);
+  --content-max:      min(52.5rem, 100%);
 
   /* Motion */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration: 0.6s;
-  --duration-slow: 1.2s;
+  --ease-default:  cubic-bezier(0.17, 0.17, 0.20, 1.00);
+  --ease-spring:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+  --dur-fast:      160ms;
+  --dur-base:      350ms;
+  --dur-moderate:  500ms;
+  --dur-slow:      650ms;
+  --dur-enter:     680ms;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────── */
@@ -47,7 +85,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -56,14 +93,55 @@ body {
   background: var(--ink);
   color: var(--paper);
   font-family: var(--font-body);
-  line-height: 1.6;
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  letter-spacing: -0.02em;
   overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  html { scroll-behavior: auto; }
+}
+
+/* Shared section header pattern */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin-bottom: var(--space-24);
+}
+
+.section-number {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  letter-spacing: 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-4);
 }

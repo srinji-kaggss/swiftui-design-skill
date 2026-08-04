@@ -1,24 +1,42 @@
 <script lang="ts">
+  import { siteConfig } from '../data/content';
+
   let scrolled = $state(false);
+  let menuOpen = $state(false);
 
   function onScroll() {
     scrolled = window.scrollY > 40;
   }
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+  }
+
+  const navLinks = [
+    { label: 'Work', href: '#work' },
+    { label: 'Services', href: '#services' },
+    { label: 'Journal', href: '#journal' },
+    { label: 'Team', href: '#team' },
+  ];
 </script>
 
-<svelte:window on:scroll={onScroll} />
+<svelte:window onscroll={onScroll} />
 
 <header class="header" class:scrolled>
   <nav class="nav">
-    <a href="#top" class="logo">
+    <a href="#top" class="logo" aria-label={siteConfig.name}>
       <span class="logo-mark">◆</span>
-      <span class="logo-text">Studio</span>
+      <span class="logo-text">{siteConfig.name}</span>
     </a>
-    <ul class="links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#method">Method</a></li>
-      <li><a href="#lab">Lab</a></li>
-      <li><a href="#contact" class="cta-button">Contact</a></li>
+    <button class="menu-toggle" onclick={toggleMenu} aria-label="Toggle menu">
+      <span class:open={menuOpen}></span>
+      <span class:open={menuOpen}></span>
+    </button>
+    <ul class="links" class:open={menuOpen}>
+      {#each navLinks as link (link.label)}
+        <li><a href={link.href} onclick={() => menuOpen = false}>{link.label}</a></li>
+      {/each}
+      <li><a href="#contact" class="cta-button" onclick={() => menuOpen = false}>Contact</a></li>
     </ul>
   </nav>
 </header>
@@ -26,13 +44,11 @@
 <style>
   .header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 100;
-    height: var(--header-height);
+    height: 4rem;
     background: transparent;
-    transition: background var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    transition: background var(--dur-base) var(--ease-default), border-color var(--dur-base) var(--ease-default);
     border-bottom: 1px solid transparent;
   }
 
@@ -44,13 +60,13 @@
   }
 
   .nav {
-    max-width: var(--max-width);
+    max-width: var(--container-max);
     margin: 0 auto;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--space-md);
+    padding: 0 var(--container-gutter);
   }
 
   .logo {
@@ -76,27 +92,25 @@
   .links {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    gap: var(--space-8);
     list-style: none;
   }
 
   .links a {
     color: var(--paper-dim);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: var(--fs-sm);
     font-weight: 500;
-    transition: color 0.2s var(--ease-out);
+    transition: color var(--dur-fast) var(--ease-default);
   }
 
-  .links a:hover {
-    color: var(--paper);
-  }
+  .links a:hover { color: var(--paper); }
 
   .cta-button {
     color: var(--accent) !important;
     border: 1px solid var(--accent);
     padding: 0.5rem 1.25rem;
-    transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out) !important;
+    transition: background var(--dur-fast) var(--ease-default), color var(--dur-fast) var(--ease-default) !important;
   }
 
   .cta-button:hover {
@@ -104,10 +118,40 @@
     color: var(--ink) !important;
   }
 
-  @media (max-width: 640px) {
-    .links li:nth-child(2),
-    .links li:nth-child(3) {
-      display: none;
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--paper);
+    transition: transform var(--dur-fast) var(--ease-default);
+  }
+
+  .menu-toggle span:first-child.open { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle span:last-child.open { transform: translateY(-3.5px) rotate(-45deg); }
+
+  @media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .links {
+      position: fixed;
+      top: 4rem; left: 0; right: 0;
+      flex-direction: column;
+      background: var(--ink);
+      padding: var(--space-8) var(--container-gutter);
+      gap: var(--space-6);
+      transform: translateY(-100%);
+      transition: transform var(--dur-base) var(--ease-default);
+      border-bottom: 1px solid var(--paper-faint);
     }
+    .links.open { transform: translateY(0); }
   }
 </style>

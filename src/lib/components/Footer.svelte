@@ -1,74 +1,88 @@
-<section id="contact" class="footer">
+<script lang="ts">
+  import { siteConfig } from '../data/content';
+</script>
+
+<footer class="footer">
   <div class="footer-inner">
-    <div class="footer-cta">
-      <p class="footer-kicker">Have a project?</p>
-      <a href="mailto:hello@studio.ch" class="footer-link">
-        hello@studio.ch
-      </a>
+    <div class="footer-brand">
+      <span class="footer-mark">◆</span>
+      <span class="footer-name">{siteConfig.name}</span>
+    </div>
+    <div class="footer-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#journal">Journal</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
     </div>
     <div class="footer-meta">
-      <p>Montreux, Switzerland</p>
-      <p>—</p>
-      <p class="footer-copy">© 2026 Studio. All rights reserved.</p>
+      <p>{siteConfig.location}</p>
+      <p class="footer-copy">© 2026 {siteConfig.name}. All rights reserved.</p>
     </div>
   </div>
-</section>
+</footer>
 
 <style>
   .footer {
     border-top: 1px solid var(--paper-faint);
-    padding: var(--space-2xl) var(--space-md);
-    max-width: var(--max-width);
+    padding: var(--space-16) var(--container-gutter);
+    max-width: var(--container-max);
     margin: 0 auto;
   }
 
   .footer-inner {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-lg);
+    gap: var(--space-8);
   }
 
-  .footer-kicker {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer-mark {
     color: var(--accent);
-    margin-bottom: var(--space-xs);
+    font-size: 1.25rem;
   }
 
-  .footer-link {
+  .footer-name {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 8vw, 6rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    text-decoration: none;
-    color: var(--paper);
-    transition: color 0.2s var(--ease-out);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
-  .footer-link:hover {
-    color: var(--accent);
+  .footer-links {
+    display: flex;
+    gap: var(--space-8);
   }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--paper-dim);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-default);
+  }
+
+  .footer-links a:hover { color: var(--accent); }
 
   .footer-meta {
-    font-size: 0.8125rem;
-    color: var(--paper-dim);
     text-align: right;
+    font-size: var(--fs-xs);
+    font-family: var(--font-mono);
+    color: var(--paper-faint);
     line-height: 1.8;
   }
 
-  .footer-copy {
-    color: var(--paper-faint);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-  }
+  .footer-copy { color: var(--paper-faint); }
 
   @media (max-width: 640px) {
-    .footer-meta {
-      text-align: left;
-    }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
   }
 </style>

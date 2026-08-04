@@ -1,87 +1,94 @@
 <script lang="ts">
-  import { scrollParallax } from '../actions/scrollReveal';
+  import { lineReveal, echoLayers, scrollParallax } from '../actions/scroll';
+  import { siteConfig } from '../data/content';
 </script>
 
 <section id="top" class="hero">
-  <div class="hero-content">
-    <p class="kicker" use:scrollParallax={0.15}>Digital studio — Montreux</p>
-    <h1 class="title" use:scrollParallax={0.25}>
-      From idea<br>
-      <span class="title-accent">to impact.</span>
-    </h1>
-    <p class="lede" use:scrollParallax={0.1}>
-      We design, code, and ship custom websites, applications, and tools.
-      Flat design, deep contrast, motion that moves with you.
-    </p>
-    <div class="actions" use:scrollParallax={0.05}>
-      <a href="#work" class="btn-primary">See our work</a>
-      <a href="#contact" class="btn-secondary">Start a project</a>
+  <div class="hero-echo" use:echoLayers={{ colors: ['var(--echo-1)', 'var(--echo-2)', 'var(--echo-3)'], intensity: 1.2 }}>
+    <div class="hero-inner">
+      <p class="kicker" use:scrollParallax={0.1}>{siteConfig.name}</p>
+      <h1 class="title" use:lineReveal={0.12}>{siteConfig.tagline}</h1>
+      <p class="lede" use:scrollParallax={0.06}>{siteConfig.description}</p>
+      <div class="actions" use:scrollParallax={0.03}>
+        <a href="#work" class="btn-primary">See our work</a>
+        <a href="#contact" class="btn-secondary">Start a project</a>
+      </div>
     </div>
   </div>
-  <div class="hero-mark" use:scrollParallax={0.4}>
-    <span class="mark-glyph">✦</span>
-  </div>
+  <div class="hero-spacer" aria-hidden="true"></div>
 </section>
 
 <style>
   .hero {
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
-    position: relative;
-    padding: 0 var(--space-md);
-    max-width: var(--max-width);
-    margin: 0 auto;
   }
 
-  .hero-content {
-    max-width: 48rem;
+  .hero-echo {
+    position: sticky;
+    top: 4rem;
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-gutter);
+    border-radius: 0.75rem;
+    overflow: visible;
+  }
+
+  .hero-inner {
+    position: relative;
     z-index: 2;
+    max-width: 48rem;
+    padding: var(--space-24) 0;
   }
 
   .kicker {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-sm);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--accent);
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-6);
   }
 
   .title {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 12vw, 10rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-size: var(--fs-display);
+    line-height: 1.05;
+    letter-spacing: -0.05em;
     font-weight: 700;
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-8);
+    text-wrap: pretty;
   }
 
-  .title-accent {
-    color: var(--accent);
+  .title :global(span) {
+    display: inline-block;
   }
 
   .lede {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: var(--fs-xl);
     line-height: 1.5;
     color: var(--paper-dim);
     max-width: 36rem;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-16);
   }
 
   .actions {
     display: flex;
-    gap: var(--space-sm);
+    gap: var(--space-4);
     flex-wrap: wrap;
   }
 
   .btn-primary, .btn-secondary {
     display: inline-block;
     padding: 1rem 2rem;
-    font-size: 0.9375rem;
+    font-size: var(--fs-base);
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.2s var(--ease-out);
+    letter-spacing: -0.02em;
+    transition: all var(--dur-fast) var(--ease-default);
   }
 
   .btn-primary {
@@ -89,38 +96,21 @@
     color: var(--ink);
   }
 
-  .btn-primary:hover {
-    background: var(--paper);
-  }
+  .btn-primary:hover { background: var(--paper); }
 
   .btn-secondary {
     border: 1px solid var(--paper-faint);
     color: var(--paper);
   }
 
-  .btn-secondary:hover {
-    border-color: var(--paper);
+  .btn-secondary:hover { border-color: var(--paper); }
+
+  .hero-spacer {
+    height: 30vh;
   }
 
-  .hero-mark {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    opacity: 0.08;
-    pointer-events: none;
-  }
-
-  .mark-glyph {
-    font-size: clamp(20rem, 40vw, 40rem);
-    line-height: 1;
-    color: var(--accent);
-  }
-
-  @media (max-width: 768px) {
-    .hero-mark {
-      display: none;
-    }
+  @media (max-width: 640px) {
+    .hero-spacer { height: 20vh; }
+    .title { font-size: var(--fs-h1); }
   }
 </style>
