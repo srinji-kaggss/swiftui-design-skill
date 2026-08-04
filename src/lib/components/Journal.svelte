@@ -3,15 +3,15 @@
 </script>
 
 <section id="journal" class="container">
-  <div style="padding: var(--spacing-x-large) 0;">
-    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+  <div style="padding: var(--space-2xl) 0;">
+    <div class="grid" style="margin-bottom: var(--space-xl);">
       <div class="col-12">
         <span class="is-style-eyebrow" data-reveal>Journal</span>
         <h2 class="section__headline" data-reveal>Thinking out loud.</h2>
       </div>
     </div>
     <div class="journal-list">
-      {#each journalPosts as post, i (post.slug)}
+      {#each journalPosts as post (post.slug)}
         <article class="journal-item" data-reveal data-reveal-batch="true" data-cursor data-cursor-text="Read">
           <div class="journal-item__info">
             <span class="journal-item__eyebrow">{post.eyebrow}</span>
@@ -36,31 +36,33 @@
   .journal-list { display: grid; gap: 0; }
   .journal-item {
     display: flex; align-items: center; justify-content: space-between;
-    padding: var(--spacing-small) 0;
-    border-bottom: 1px solid var(--color-gray-300);
-    transition: border-color 0.35s var(--default-transition-easing);
-    gap: var(--spacing-small);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-border);
+    transition: border-color var(--duration-standard) var(--ease-standard);
+    gap: var(--space-sm);
   }
-  .journal-item:hover { border-bottom-color: var(--color-green); }
+  .journal-item:last-child { border-bottom: 1px solid var(--color-border); }
+  .journal-item:hover { border-top-color: var(--color-brand); }
   .journal-item__info { flex: 1; min-width: 0; }
   .journal-item__eyebrow {
-    font-family: var(--font-mono); font-size: var(--font-size-x-small);
-    text-transform: uppercase; letter-spacing: -0.02em;
-    color: var(--color-gray-400); display: block; margin-bottom: 0.5em;
+    font-family: var(--font-mono); font-size: var(--text-caption);
+    text-transform: uppercase; letter-spacing: var(--tracking-label);
+    color: var(--color-brand); display: block; margin-bottom: 0.5em;
   }
   .journal-item__title {
-    font-size: var(--font-size-h4); font-weight: 500;
-    letter-spacing: var(--letter-spacing-h4); line-height: var(--line-height-h4);
+    font-size: var(--text-h3); font-weight: var(--weight-display);
+    line-height: var(--leading-display);
     margin-bottom: 0.5em;
   }
   .journal-item__excerpt {
-    font-size: var(--font-size-base); color: var(--color-gray-400);
-    line-height: 1.5; margin-bottom: var(--spacing-tiny);
+    font-size: var(--text-body); color: var(--color-muted-ink);
+    line-height: var(--leading-body); margin-bottom: var(--space-2xs);
+    font-family: var(--font-body);
   }
   .journal-item__meta { flex-shrink: 0; }
   .journal-item__date {
-    font-family: var(--font-mono); font-size: var(--font-size-x-small);
-    color: var(--color-gray-500);
+    font-family: var(--font-mono); font-size: var(--text-caption);
+    color: var(--color-muted-ink); font-variant-numeric: tabular;
   }
   @media (max-width: 768px) {
     .journal-item { flex-direction: column; align-items: flex-start; }

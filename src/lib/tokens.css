@@ -1,318 +1,172 @@
 /* ═══════════════════════════════════════════════════════════════
-   DESIGN TOKENS — ported from afternow _afternow-base.css + lgwks
-   globals.css. Palette swapped to Design-I-like flat black/amber.
-   Structure is verbatim from source. Only colors + fonts changed.
+   LOGICAL WORKS DESIGN SYSTEM — TOKENS
+   Ported verbatim from LWDS tokens/*.css (2026-08 overhaul).
+   Pigment palette, Bodoni Moda/Archivo/IBM Plex Mono, Seam motif.
+   Dark stance is default — light stance via [data-theme="light"].
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── FONTS — Google Fonts CDN (self-host before production ship) ── */
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+/* ── COLORS (Pigment palette) ── */
 :root {
-  /* ── Layout tokens (from afternow) ── */
-  --site-header-height: 3.875rem;
-  --site-content-border-radius: 0.75rem;
-  --site-logo-height: 2rem;
-  --content-width: min(52.5rem, 100%);
+  /* Field — chalk to pine. Warm cream, and a near-black that is green, not grey. */
+  --chalk-0:#f5f1e6;
+  --chalk-100:#ede7d9;
+  --chalk-200:#e1d9c6;
+  --chalk-300:#c6bba2;
+  --chalk-400:#9c927c;
+  --pine-700:#3a413a;
+  --pine-800:#262b26;
+  --pine-900:#171b17;
+  --ink-0:#ede7d9;
+  --ink-900:#1b1f1b;
+
+  /* Pigments — deliberately unequal in value */
+  --clay-600:#90492c;
+  --clay-500:#b4623f;
+  --clay-400:#d08a66;
+  --smoke-600:#35505e;
+  --smoke-500:#4a6675;
+  --smoke-400:#7e9aa8;
+  --sage-600:#6e7d57;
+  --sage-500:#8d9c74;
+  --sage-400:#b0bc98;
+
+  /* State pigments — never colour-coded to a product variant */
+  --fern-500:#46603c;
+  --fern-400:#7d9a6f;
+  --ochre-500:#b5852f;
+  --ochre-400:#d4ab5c;
+  --rust-500:#9a3b22;
+  --rust-400:#c9705a;
+
+  /* Variant sources */
+  --v-forge:#b4623f; --v-forge-strong:#90492c; --v-forge-wash:#f0e2d8;
+  --v-keel:#4a6675;  --v-keel-strong:#35505e;  --v-keel-wash:#dfe6ea;
+  --v-braid:#8d9c74; --v-braid-strong:#6e7d57; --v-braid-wash:#e6e9dc;
+
+  /* Semantic layer — dark stance (default on this site) */
+  --color-bg: var(--pine-900);
+  --color-surface: var(--pine-800);
+  --color-sunken:#101410;
+  --color-ink: var(--ink-0);
+  --color-muted-ink:#95917f;
+  --color-border:#39413a;
+  --color-hairline:#2b312b;
+  --color-brand: var(--v-forge);
+  --color-brand-strong: var(--v-forge-strong);
+  --color-brand-wash: var(--v-forge-wash);
+  --color-on-brand: var(--pine-900);
+  --color-accent-2: var(--smoke-400);
+  --color-accent-3: var(--sage-400);
+  --color-success: var(--fern-400);
+  --color-warning: var(--ochre-400);
+  --color-danger: var(--rust-400);
+  --color-focus-ring: var(--smoke-400);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 20px 56px -18px rgba(0,0,0,.7);
+}
+
+/* ── Variant scopes ── */
+[data-variant="forge"]{ --color-brand: var(--v-forge); --color-brand-strong: var(--v-forge-strong); --color-brand-wash: var(--v-forge-wash); }
+[data-variant="keel"] { --color-brand: var(--v-keel);  --color-brand-strong: var(--v-keel-strong);  --color-brand-wash: var(--v-keel-wash); }
+[data-variant="braid"]{ --color-brand: var(--v-braid); --color-brand-strong: var(--v-braid-strong); --color-brand-wash: var(--v-braid-wash); }
+
+/* ── Light stance ── */
+[data-theme="light"]{
+  --color-bg: var(--chalk-100);
+  --color-surface: var(--chalk-0);
+  --color-sunken: var(--chalk-200);
+  --color-ink: var(--ink-900);
+  --color-muted-ink:#6a6a5c;
+  --color-border: var(--chalk-300);
+  --color-hairline: var(--chalk-200);
+  --v-forge:#b4623f; --v-forge-strong:#90492c; --v-forge-wash:#f0e2d8;
+  --v-keel:#4a6675;  --v-keel-strong:#35505e;  --v-keel-wash:#dfe6ea;
+  --v-braid:#8d9c74; --v-braid-strong:#6e7d57; --v-braid-wash:#e6e9dc;
+  --color-brand: var(--v-forge);
+  --color-brand-strong: var(--v-forge-strong);
+  --color-brand-wash: var(--v-forge-wash);
+  --color-on-brand: var(--chalk-0);
+  --color-accent-2: var(--smoke-500);
+  --color-accent-3: var(--sage-600);
+  --color-success: var(--fern-500);
+  --color-warning: var(--ochre-500);
+  --color-danger: var(--rust-500);
+  --color-focus-ring: var(--smoke-500);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 18px 50px -18px rgba(23,27,23,.38);
+}
+
+/* ── TYPOGRAPHY ── */
+:root {
+  --font-display:'Bodoni Moda',Georgia,serif;
+  --font-body:'Archivo',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+
+  --tracking-display:-0.005em;
+  --tracking-body:-0.005em;
+  --tracking-label:0.16em;
+
+  --leading-display:1.06;
+  --leading-body:1.6;
+
+  --text-display-1: clamp(3rem, calc(2rem + 4vw), 5.5rem);
+  --text-display-2: clamp(2.25rem, calc(1.7rem + 2.4vw), 3.75rem);
+  --text-h1: clamp(1.9rem, calc(1.6rem + 1.2vw), 2.6rem);
+  --text-h2: clamp(1.5rem, calc(1.3rem + 0.8vw), 2rem);
+  --text-h3: 1.25rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+
+  --weight-display:400;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+}
+
+/* ── SPACING + RADIUS ── */
+:root {
+  --space-3xs:.25rem;
+  --space-2xs:.5rem;
+  --space-xs:.75rem;
+  --space-sm:1rem;
+  --space-md:1.5rem;
+  --space-lg:2.5rem;
+  --space-xl:4rem;
+  --space-2xl:6rem;
+  --space-3xl:clamp(6rem, 4rem + 8vw, 10rem);
+
+  --radius-control:2px;
+  --radius-surface:0;
+  --radius-tile:22px;
+  --radius-lobe:999px;
+  --radius-pill:999px;
+  --rule-width:2px;
+  --seam-width:1px;
+  --seam-offset:8px;
+
+  --content-width:64rem;
+  --grid-columns:12;
+  --grid-gap: var(--space-md);
   --grid-padding-x: clamp(1rem, 0.478rem + 1.739vw, 2rem);
-
-  /* ── Motion tokens (from afternow + lgwks) ── */
-  --default-transition-easing: cubic-bezier(0.17, 0.17, 0.20, 1.00);
-  --default-transition-duration: 350ms;
-  --default-tags-gap: 0.25rem;
-
-  /* ── Palette: Design-I-like flat black + warm amber ── */
-  --color-black: #0A0A0A;
-  --color-white: #FAFAF7;
-  --color-gray-100: #141414;
-  --color-gray-200: #1E1E1E;
-  --color-gray-300: #333333;
-  --color-gray-400: #888888;
-  --color-gray-500: #888888;
-  --color-gray-600: #555555;
-  --color-gray-700: #AAAAAA;
-  --color-gray-800: #DDDDDD;
-  --color-gray-900: #FAFAF7;
-
-  /* Echo layer colours */
-  --color-green: #E8A700;
-  --color-purple: #C2410C;
-  --color-yellow: #6B8A5E;
-  --color-orange: #E8A700;
-  --color-deep-blue: #333333;
-  --color-light-blue: #1E1E1E;
-  --color-malva: #141414;
-  --color-celeste: #333333;
-  --color-dark-moss: #0A0A0A;
-
-  /* ── Typography (fluid scale from afternow, verbatim) ── */
-  --font-size-display-1: clamp(3.625rem, 2.06rem + 5.217vw, 6.625rem);
-  --font-size-display-2: clamp(2.75rem, 1.38rem + 4.565vw, 5.375rem);
-  --font-size-h1: clamp(2.125rem, 1.016rem + 3.696vw, 4.25rem);
-  --font-size-h2: clamp(1.875rem, 1.092rem + 2.609vw, 3.375rem);
-  --font-size-h3: clamp(1.625rem, 1.038rem + 1.957vw, 2.75rem);
-  --font-size-h4: clamp(1.375rem, 0.918rem + 1.522vw, 2.25rem);
-  --font-size-h5: clamp(1.25rem, 0.989rem + 0.87vw, 1.75rem);
-  --font-size-h6: clamp(1.125rem, 0.995rem + 0.435vw, 1.375rem);
-  --font-size-x-large: clamp(1.25rem, 1.12rem + 0.435vw, 1.5rem);
-  --font-size-large: clamp(1.125rem, 1.06rem + 0.217vw, 1.25rem);
-  --font-size-base: clamp(1rem, 0.935rem + 0.217vw, 1.125rem);
-  --font-size-medium: clamp(0.875rem, 0.81rem + 0.217vw, 1rem);
-  --font-size-small: clamp(0.813rem, 0.78rem + 0.109vw, 0.875rem);
-  --font-size-x-small: 0.75rem;
-
-  --line-height-display-1: 1.09;
-  --line-height-display-2: 1.09;
-  --line-height-h1: 1.09;
-  --line-height-h2: 1.11;
-  --line-height-h3: 1.11;
-  --line-height-h4: 1.11;
-  --line-height-h5: 1.11;
-  --line-height-h6: 1.2;
-  --line-height-x-large: 1.3;
-  --line-height-large: 1.35;
-  --line-height-base: 1.4;
-  --line-height-medium: 1.45;
-  --line-height-small: 1.5;
-  --line-height-x-small: 1.5;
-
-  --letter-spacing-display-1: -0.05em;
-  --letter-spacing-display-2: -0.05em;
-  --letter-spacing-h1: -0.05em;
-  --letter-spacing-h2: -0.04em;
-  --letter-spacing-h3: -0.04em;
-  --letter-spacing-h4: -0.04em;
-  --letter-spacing-h5: -0.03em;
-  --letter-spacing-h6: -0.03em;
-  --letter-spacing-x-large: -0.025em;
-  --letter-spacing-large: -0.02em;
-  --letter-spacing-base: -0.02em;
-  --letter-spacing-medium: -0.02em;
-  --letter-spacing-small: -0.02em;
-  --letter-spacing-x-small: -0.02em;
-
-  --headings-font-weight: 500;
-
-  /* ── Spacing (from afternow, verbatim) ── */
-  --spacing-x-tiny: 0.25rem;
-  --spacing-tiny: 0.5rem;
-  --spacing-3-x-small: 0.75rem;
-  --spacing-2-x-small: clamp(0.875rem, 0.81rem + 0.217vw, 1rem);
-  --spacing-x-small: clamp(1rem, 0.739rem + 0.87vw, 1.5rem);
-  --spacing-small: clamp(1.5rem, 1.239rem + 0.87vw, 2rem);
-  --spacing-medium: clamp(2rem, 1.739rem + 0.87vw, 2.5rem);
-  --spacing-medium-large: clamp(2.625rem, 1.908rem + 2.391vw, 4rem);
-  --spacing-large: clamp(3.375rem, 2.005rem + 4.565vw, 6rem);
-  --spacing-x-large: clamp(4rem, 1.913rem + 6.957vw, 8rem);
-  --spacing-2-x-large: clamp(6.25rem, 4.293rem + 6.522vw, 10rem);
-  --spacing-3-x-large: clamp(7.75rem, 5.533rem + 7.391vw, 12rem);
-  --spacing-huge: clamp(9rem, 5.348rem + 12.174vw, 16rem);
-  --spacing-gigantic: clamp(11.25rem, 6.685rem + 15.217vw, 20rem);
-
-  /* ── Font families (no web fonts — system only) ── */
-  --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --font-secondary: "New York", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
-  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
-
-  /* ── Header ── */
-  --header-bg-color: var(--color-black);
-  --header-color: var(--color-white);
 }
 
-/* ═══ RESET (from afternow) ═══ */
+/* ── MOTION ── */
+:root {
+  --ease-standard: cubic-bezier(.32,0,.16,1);
+  --ease-seam: cubic-bezier(.22,1,.28,1);
+  --ease-exit: cubic-bezier(.4,0,1,1);
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-  text-rendering: optimizeSpeed;
-  scrollbar-gutter: stable;
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--color-black);
-  color: var(--color-white);
-  font-family: var(--font-primary);
-  font-size: var(--font-size-base);
-  letter-spacing: var(--letter-spacing-base);
-  line-height: var(--line-height-base);
-  overflow-x: hidden;
-}
-
-img, picture, video {
-  display: block;
-  height: auto;
-  max-width: 100%;
-}
-
-button, input, select, textarea {
-  color: inherit;
-  font: inherit;
-}
-
-::selection {
-  background: var(--color-green);
-  color: var(--color-black);
-}
-
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.15em;
-  transition: color 0.25s ease, text-decoration 0.25s ease;
-}
-
-a:hover { text-decoration-color: currentColor; }
-a:focus-visible { outline: 2px solid currentColor; outline-offset: 0.1em; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-secondary);
-  font-weight: var(--headings-font-weight);
-  text-wrap: pretty;
-}
-
-/* ═══ SHARED CLASSES (ported from afternow _afternow-base.css) ═══ */
-
-.has-content-width { max-width: var(--content-width); }
-.container, .has-content-width { margin-left: auto; margin-right: auto; }
-.container { padding: 0 var(--grid-padding-x); width: 100%; }
-
-.grid {
-  align-items: flex-start;
-  column-gap: var(--spacing-x-small);
-  display: grid;
-  grid-template-columns: 1fr;
-}
-.grid > * { min-width: 0; }
-
-@media (min-width: 768px) {
-  .grid.grid-columns--2, .grid.grid-columns--3 { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 992px) {
-  .grid.grid-columns--3 { grid-template-columns: repeat(3, 1fr); }
-  .grid { grid-template-columns: repeat(12, 1fr); }
-  .grid .col-1 { grid-column: span 1; }
-  .grid .col-2 { grid-column: span 2; }
-  .grid .col-3 { grid-column: span 3; }
-  .grid .col-4 { grid-column: span 4; }
-  .grid .col-5 { grid-column: span 5; }
-  .grid .col-6 { grid-column: span 6; }
-  .grid .col-7 { grid-column: span 7; }
-  .grid .col-8 { grid-column: span 8; }
-  .grid .col-9 { grid-column: span 9; }
-  .grid .col-10 { grid-column: span 10; }
-  .grid .col-11 { grid-column: span 11; }
-  .grid .col-12 { grid-column: span 12; }
-}
-
-/* ── Eyebrow (from afternow) ── */
-.is-style-eyebrow {
-  color: var(--color-gray-400);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-medium);
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 1;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: var(--spacing-small);
-  width: fit-content;
-}
-
-/* ── Tag pills (from afternow) ── */
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--default-tags-gap);
-  padding: 0;
-}
-.tag-list > * {
-  backdrop-filter: blur(0.2em);
-  background: var(--color-gray-100);
-  border-radius: 1.5rem;
-  color: var(--color-white);
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-x-small);
-  font-weight: 500;
-  line-height: 1;
-  padding: 0.65em 1em;
-  position: relative;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 0.3s var(--default-transition-easing), color 0.3s var(--default-transition-easing), border-radius 0.3s var(--default-transition-easing);
-  width: fit-content;
-}
-.tag-list > *:nth-child(2n) { border-radius: 0; }
-.tag-list > *:is(a, button):hover { background: var(--color-gray-200); }
-
-.is-style-tag {
-  backdrop-filter: blur(0.2em);
-  background: var(--color-gray-100);
-  border-radius: 1.5rem;
-  color: var(--color-white);
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-x-small);
-  font-weight: 500;
-  line-height: 1;
-  padding: 0.65em 1em;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 0.3s var(--default-transition-easing), color 0.3s var(--default-transition-easing), border-radius 0.3s var(--default-transition-easing);
-  width: fit-content;
-}
-
-/* ── Echo layers (from afternow _afternow-base.css, verbatim) ── */
-.echo { pointer-events: none; z-index: -2; }
-.echo, .echo__layer { border-radius: inherit; inset: 0; position: absolute; }
-.echo__layer {
-  --echo-color: var(--color-purple);
-  backface-visibility: hidden;
-  background-color: var(--echo-color);
-  display: block;
-  will-change: transform;
-  z-index: 0;
-}
-.echo__layer:first-child { --echo-color: var(--color-purple); z-index: -1; }
-.echo__layer:nth-child(2) { --echo-color: var(--color-yellow); z-index: -2; }
-
-/* ── Scroll reveal (from lgwks globals.css, verbatim) ── */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(44px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-}
-[data-reveal].is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-[data-animate] .line { margin-bottom: -0.1em; padding-bottom: 0.1em; }
-
-/* ── Section structure (from afternow) ── */
-.section__headline {
-  font-size: var(--font-size-h4);
-  letter-spacing: var(--letter-spacing-h4);
-  line-height: var(--line-height-h4);
-  max-width: 45ch;
-  text-wrap: pretty;
-}
-
-/* ── Reduced motion ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+  --duration-fast:180ms;
+  --duration-standard:320ms;
+  --duration-slow:560ms;
+  --duration-scene:900ms;
+  --stagger-step:80ms;
+  --stagger-scene:340ms;
 }

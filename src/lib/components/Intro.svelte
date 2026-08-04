@@ -1,9 +1,8 @@
-<!-- Ported from lgwks PageHero + Section structure -->
 <script lang="ts">
 </script>
 
 <section class="container">
-  <div class="intro" data-reveal style="max-width: var(--content-width); padding: var(--spacing-x-large) 0;">
+  <div class="intro" data-reveal style="max-width: var(--content-width); padding: var(--space-2xl) 0;">
     <span class="is-style-eyebrow">How we work</span>
     <h2 class="intro__heading" data-reveal>One team. One conversation. From day one.</h2>
     <div class="intro__body" data-reveal>
@@ -15,17 +14,18 @@
 
 <style>
   .intro__heading {
-    font-size: var(--font-size-h1);
-    letter-spacing: var(--letter-spacing-h1);
-    line-height: var(--line-height-h1);
-    margin-bottom: var(--spacing-medium);
+    font-size: var(--text-display-2);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-display);
+    margin-bottom: var(--space-md);
     text-wrap: pretty;
   }
   .intro__body {
-    font-size: var(--font-size-large);
-    line-height: var(--line-height-large);
-    color: var(--color-gray-400);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-muted-ink);
     max-width: 42rem;
+    font-family: var(--font-body);
   }
   .intro__body p + p { margin-top: 1.2em; }
 </style>

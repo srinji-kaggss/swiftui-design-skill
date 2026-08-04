@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Logical Works">
+<rect width="120" height="120" rx="26" fill="#171b17"></rect>
+<path d="M60,26 H38 A30,30 0 0 0 38,86 H60 Z" fill="#ede7d9"></path>
+<path d="M60,34 H82 A30,30 0 0 1 82,94 H60 Z" fill="#d08a66"></path>
+<circle cx="60" cy="60" r="4.5" fill="#171b17"></circle>
+</svg>

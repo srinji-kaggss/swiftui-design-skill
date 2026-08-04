@@ -3,16 +3,16 @@
 </script>
 
 <section class="container">
-  <div style="padding: var(--spacing-x-large) 0;">
-    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+  <div style="padding: var(--space-2xl) 0;">
+    <div class="grid" style="margin-bottom: var(--space-xl);">
       <div class="col-12">
         <span class="is-style-eyebrow" data-reveal>Logical Works in numbers</span>
         <h2 class="section__headline" data-reveal>Our journey and impact.</h2>
       </div>
     </div>
-    <div class="grid grid-columns--2" style="gap: var(--spacing-x-small);">
+    <div class="grid grid-columns--2" style="gap: var(--grid-gap);">
       {#each stats as stat (stat.label)}
-        <div class="stat-card" data-reveal data-reveal-batch="true">
+        <div class="lw-card stat-card" data-reveal data-reveal-batch="true">
           <div class="stat-card__value">{stat.value}</div>
           <div class="stat-card__label">{stat.label}</div>
         </div>
@@ -22,24 +22,19 @@
 </section>
 
 <style>
-  .stat-card {
-    background: var(--color-gray-100);
-    border-radius: var(--site-content-border-radius);
-    padding: var(--spacing-small);
-    margin-bottom: var(--spacing-x-small);
-  }
   .stat-card__value {
-    font-family: var(--font-secondary);
-    font-size: var(--font-size-display-2);
-    font-weight: 600;
-    letter-spacing: var(--letter-spacing-display-2);
-    line-height: var(--line-height-display-2);
-    color: var(--color-green);
-    margin-bottom: var(--spacing-tiny);
+    font-family: var(--font-mono);
+    font-size: var(--text-display-2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
+    color: var(--color-brand);
+    margin-bottom: var(--space-2xs);
+    font-variant-numeric: tabular;
   }
   .stat-card__label {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-    color: var(--color-gray-400);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-muted-ink);
+    font-family: var(--font-body);
   }
 </style>

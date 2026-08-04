@@ -1,7 +1,7 @@
 <script lang="ts">
   import './lib/tokens.css';
   import './lib/styles/base.css';
-  import { scrollRevealAll } from './lib/actions/scroll';
+  import { scrollRevealAll } from './lib/motion/engine';
   import Preloader from './lib/components/Preloader.svelte';
   import CustomCursor from './lib/components/CustomCursor.svelte';
   import Header from './lib/components/Header.svelte';

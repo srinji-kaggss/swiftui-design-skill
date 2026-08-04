@@ -1,51 +1,37 @@
-<!-- Afternow site-footer structure (sticky) -->
+<!-- LWDS Footer: datum top-rule, mono, fr-CA badge -->
 <script lang="ts">
   import { siteConfig } from '../data/content';
 </script>
 
 <footer class="site-footer">
   <div class="container">
-    <div class="site-footer__bottom">
-      <div class="site-footer__logo-socials">
-        <span class="site-footer__logo">{siteConfig.name}</span>
-        <p class="site-footer__copyright">© 2026 {siteConfig.name}. All rights reserved.</p>
+    <div class="site-footer__inner">
+      <div class="site-footer__left">
+        <span class="site-footer__name">{siteConfig.name} · logicalworks.ca · Toronto, ON</span>
       </div>
-      <div class="site-footer__legal">
-        <ul style="display: flex; gap: var(--spacing-tiny); list-style: none; padding: 0;">
-          <li><a href="#work" class="is-style-tag">Work</a></li>
-          <li><a href="#services" class="is-style-tag">Services</a></li>
-          <li><a href="#team" class="is-style-tag">Team</a></li>
-          <li><a href="#journal" class="is-style-tag">Journal</a></li>
-          <li><a href="#contact" class="is-style-tag">Contact</a></li>
-        </ul>
+      <div class="site-footer__right">
+        <span class="is-style-tag">fr-CA disponible</span>
       </div>
     </div>
   </div>
 </footer>
 
 <style>
-  .site-footer__bottom {
-    display: grid; gap: var(--spacing-small);
-    grid-template-columns: 1fr;
+  .site-footer {
+    border-top: var(--rule-width) solid var(--color-accent-3);
+    padding: var(--space-lg) 0;
+    background: var(--color-bg);
   }
-  @media (min-width: 992px) {
-    .site-footer__bottom { grid-template-columns: repeat(12, 1fr); }
-    .site-footer__bottom .site-footer__logo-socials { grid-column: span 7; }
-    .site-footer__bottom .site-footer__legal { grid-column: span 5; }
+  .site-footer__inner {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: var(--space-sm);
   }
-  .site-footer__logo {
-    font-family: var(--font-secondary);
-    font-size: var(--font-size-large);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    display: block;
-    margin-bottom: var(--spacing-tiny);
-  }
-  .site-footer__copyright {
+  .site-footer__name {
     font-family: var(--font-mono);
-    font-size: var(--font-size-x-small);
-    color: var(--color-gray-400);
-    opacity: 0.6;
+    font-size: var(--text-caption);
+    color: var(--color-muted-ink);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
   }
-  .site-footer__legal ul { justify-content: flex-end; }
+  .site-footer__right { display: flex; gap: var(--space-2xs); }
 </style>

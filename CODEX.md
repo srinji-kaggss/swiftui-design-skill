@@ -1,62 +1,62 @@
-# Website Codex — Systematic Pattern Extraction
+# Website Codex — Logical Works Design System
 
-## Source Matrix
+## System Alignment
 
-| Pattern | Source | File | Port Strategy |
-|---------|--------|------|---------------|
-| **Color tokens** | lgwks globals.css | `src/app/globals.css:1-80` | Copy token structure, swap palette to Design-I-like black/amber |
-| **Fluid type scale** | afternow main.css | `:root --font-size-*` | Copy verbatim — same clamp() values |
-| **Spacing scale** | afternow main.css | `:root --spacing-*` | Copy verbatim |
-| **Echo layers** | afternow _afternow-base.css | `.echo`, `.echo__layer` | Copy CSS, port JS from afternow home.js scroll velocity logic |
-| **Preloader** | lgwks PageLoadVeil + afternow | `globals.css .page-load-*` | Port PageLoadVeil component + CSS |
-| **Button system** | afternow _afternow-base.css | `.btn`, `btn-icon-move-in/out` | Copy verbatim — the arrow clip-path animation is pure CSS |
-| **Tag pills** | afternow main.css | `.tag-list > *`, `.is-style-tag` | Copy verbatim |
-| **Eyebrow labels** | afternow main.css | `.is-style-eyebrow` | Copy verbatim |
-| **Scroll reveal** | lgwks useScrollReveal | `src/hooks/useScrollReveal.ts` | Port as Svelte action — IntersectionObserver + data-reveal |
-| **Letter hero title** | lgwks AnimatedHeroTitle | `src/components/AnimatedHeroTitle.tsx` | Port as Svelte component — letter-by-letter 45ms stagger |
-| **Pinned hero** | afternow home.js | GSAP ScrollTrigger pin | Use CSS position:sticky + scroll-driven clip-path |
-| **Hero video reveal** | afternow home.js | `clip-path: inset(50%→0%)` | CSS keyframe animation |
-| **Sticky footer** | afternow _afternow-base.css | `.site-footer position:sticky` | Copy verbatim |
-| **Grid system** | afternow _afternow-base.css | `.grid`, `.col-*` | 12-col grid, copy verbatim |
-| **Section structure** | afternow | `.section__headline`, `.section__cta` | Copy verbatim |
-| **Marquee** | lgwks ClientMarquee | `src/components/ClientMarquee.tsx` | Port as Svelte — CSS keyframe, no dep |
-| **Custom cursor** | lgwks CustomCursor | `src/components/CustomCursor.tsx` | Port as Svelte action |
-| **Floating icons** | lgwks FloatingIcons | `src/components/FloatingIcons.tsx` | Port as Svelte — scroll parallax shapes |
-| **Burst button** | lgwks BurstButton | `src/components/BurstButton.tsx` | Port as Svelte — IntersectionObserver trigger |
-| **Page hero** | lgwks PageHero | `src/components/PageHero.tsx` | Port as Svelte component |
-| **Card hover** | afternow archive-item | `.archive-item:hover .archive-item__cta` | Copy grid expansion on hover |
-| **Content width** | afternow | `--content-width:min(52.5rem,100%)` | Copy verbatim |
-| **Border radius** | afternow | `--site-content-border-radius:0.75rem` | Copy verbatim |
-| **Theme color swap** | lgwks globals.css | `:root[data-theme="dark"]` | We're dark-only — use Design-I-like palette |
+This site ports the **Logical Works Design System** (2026-08 overhaul) as its single source of truth for all visual and motion decisions. The previous afternow/lgwks token mapping has been superseded.
 
-## Palette Mapping (Design-I-like → our tokens)
+### Token sources (all ported verbatim from LWDS)
 
-| afternow/lgwks token | their value | our value | source |
-|---------------------|------------|----------|--------|
-| --color-black | #000 / #1C1A0F | #0A0A0A | Design-I-like bg |
-| --color-white | #fff / #F4F0E6 | #FAFAF7 | Design-I-like text |
-| --color-gray-100 | #EAE4D4 | #141414 | card surface |
-| --color-gray-200 | #DFD8C6 | #1E1E1E | raised surface |
-| --color-gray-300 | #D6CEB8 | #333333 | borders |
-| --color-gray-400 | #6B6550 | #888888 | muted text |
-| --color-gray-500 | #6B6550 | #888888 | muted text |
-| --color-green | #4E6640 | #E8A700 | accent (amber) |
-| --color-purple | #9A4F2C | #C2410C | echo layer 2 |
-| --color-yellow | #C89418 | #6B8A5E | echo layer 3 |
-| --font-primary | Messina Sans | system sans | no web fonts |
-| --font-secondary | Messina Sans | system serif | display headings |
-| --font-mono | Messina Sans Mono | ui-monospace | labels/code |
+| Token group | Source | Port target |
+|------------|--------|-------------|
+| **Colors** | `tokens/colors.css` | `src/lib/tokens.css` — Pigment palette (clay/smoke/sage on pine black) |
+| **Typography** | `tokens/typography.css` | Bodoni Moda (display 400/500), Archivo (body), IBM Plex Mono (evidence/labels) |
+| **Spacing/Radius** | `tokens/spacing.css` | Square surfaces (`--radius-surface: 0`), 2px controls, Seam motif (lobe = 999px) |
+| **Motion** | `tokens/motion.css` | `--ease-standard` 320ms, `--ease-seam` for arrivals, no bounce |
+| **Fonts** | `tokens/fonts.css` | Google Fonts CDN (self-host before production) |
 
-## Animation Timing (from source code)
+### Motion engine
 
-| Effect | Duration | Easing | Source |
-|--------|----------|--------|--------|
-| Button hover border-radius | 320ms | cubic-bezier(.17,.17,.20,1) | afternow .btn |
-| Button icon move | 350ms | ease-out | afternow btn-icon-move-in |
-| Scroll reveal | 650ms | cubic-bezier(0.16,1,0.3,1) | lgwks [data-reveal] |
-| Preloader fade | 420ms | cubic-bezier(.17,.17,.20,1) | lgwks .page-load-veil |
-| Nav drop-in | 680ms | cubic-bezier(.17,.17,.20,1) | lgwks @keyframes navDropIn |
-| Hero media reveal | 900ms | cubic-bezier(.17,.17,.20,1) | lgwks heroMediaReveal |
-| Letter title stagger | 45ms per letter | — | lgwks AnimatedHeroTitle |
-| Echo velocity scale | 100ms settle, 300ms recovery | power1.out → spring | afternow home.js |
-| Marquee | 40s linear | linear | lgwks ClientMarquee |
+| Action | Source pattern | Implementation |
+|--------|---------------|----------------|
+| **scrollRevealAll** | lgwks `useScrollReveal` + Motion One `inView` | `src/lib/motion/engine.ts` — finds `[data-reveal]`, animates with `--ease-standard` |
+| **echoLayers** | afternow scroll velocity + Motion One `scroll()` | Pigment palette colors, velocity-reactive scale + drift |
+| **letterTitle** | lgwks `AnimatedHeroTitle` + Motion One `animate`/`stagger` | Letter-by-letter `--ease-seam` reveal |
+| **floatingParallax** | lgwks `FloatingIcons` | rAF scroll parallax, Pigment shapes |
+| **burstTrigger** | lgwks `BurstButton` + Motion One `inView` | IntersectionObserver → CSS keyframe burst |
+| **heroPinReveal** | afternow GSAP ScrollTrigger | rAF scroll → clip-path inset mapping |
+| **worldBuild** | LWDS `brand-wordmark-build.html` | 4-beat: field → halves meet → word draws → settle |
+
+### Component mapping
+
+| Component | LWDS reference | Pattern |
+|-----------|---------------|---------|
+| **Preloader** | `guidelines/brand-wordmark-build.html` | 4-beat world-build (field strokes → lobes → wordmark) |
+| **Header** | `ui_kits/marketing-site/TopNav.jsx` | Seam mark SVG + constructed wordmark, spaced-caps nav |
+| **Hero** | afternow echo + lgwks letterTitle | Pigment echo layers, Motion One letter stagger |
+| **Capabilities** | `ui_kits/marketing-site/Home.jsx` cards | LWDS Card (datum top-rule), 3-col grid |
+| **Work** | afternow archive-item + lgwks cases | LWDS tile radius, accent-rule cards |
+| **Stats** | LWDS mono numerics | `--font-mono`, `tabular-nums`, brand color |
+| **Team** | LWDS Card seam variant | `lw-card--seam` (left accent rule) |
+| **Journal** | `ui_kits/marketing-site/Journal.jsx` | Mono eyebrows, datum rules between items |
+| **Contact** | `ui_kits/marketing-site/Contact.jsx` | Display-type email, mono meta |
+| **Footer** | `ui_kits/marketing-site/Footer.jsx` | Datum top-rule, mono, fr-CA badge |
+
+### Runtime dependencies
+
+| Dep | Version | Size | Purpose |
+|-----|---------|------|---------|
+| `motion` | 10.18.0 | ~5kb gz | Motion engine — `animate`, `stagger`, `inView`, `scroll` |
+| `svelte` | 5.56.x | — | Framework (devDep) |
+| `vite` | 6.x | — | Build (devDep) |
+
+### Design decisions (LWDS-driven)
+
+- **Dark stance is default**: `data-theme="dark"` on `<html>`. Light stance available via `[data-theme="light"]`.
+- **Pigment palette**: pine-900 black (#171b17), clay-500 brand, smoke-500 accent-2, sage-500 accent-3. No blue/purple/teal "AI palette".
+- **Square corners**: `--radius-surface: 0` on cards/panels, `--radius-control: 2px` on buttons/inputs, `--radius-tile: 22px` on work media, `--radius-lobe: 999px` on echo layers.
+- **No shadows**: depth from flat tone changes and 2px accent rules, not floating boxes. `--shadow-lg` only for overlays.
+- **Seam motif**: the Coordination Mark (ink lobe + brand lobe meeting on vertical axis with center node) appears in header and preloader.
+- **Constructed wordmark**: `wordmark.js` — strokes on a 140-unit grid, not a font. Renders into header and preloader via `renderWordmark()`.
+- **Bodoni Moda**: display type at 400/500 only, never below 28px, never bold. Tracking -0.005em (high contrast needs air).
+- **IBM Plex Mono**: evidence/state/labels, spaced caps (0.16em tracking), tabular numerals.
+- **Motion**: one-physics discipline. `--ease-standard` 320ms for everything, `--ease-seam` for arrivals. No bounce, no overshoot. Reduced-motion = opacity-only.

@@ -3,16 +3,16 @@
 </script>
 
 <section id="team" class="container">
-  <div style="padding: var(--spacing-x-large) 0;">
-    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+  <div style="padding: var(--space-2xl) 0;">
+    <div class="grid" style="margin-bottom: var(--space-xl);">
       <div class="col-12">
         <span class="is-style-eyebrow" data-reveal>The team</span>
         <h2 class="section__headline" data-reveal>The people behind the work.</h2>
       </div>
     </div>
-    <div class="grid grid-columns--2" style="gap: var(--spacing-x-small);">
-      {#each founders as founder, i (founder.name)}
-        <article class="founder-card" data-reveal data-reveal-batch="true">
+    <div class="grid grid-columns--2" style="gap: var(--grid-gap);">
+      {#each founders as founder (founder.name)}
+        <article class="lw-card lw-card--seam founder-card" data-reveal data-reveal-batch="true">
           <div class="founder-card__avatar">{founder.initials}</div>
           <div class="founder-card__info">
             <h3 class="founder-card__name">{founder.name}</h3>
@@ -31,34 +31,29 @@
 </section>
 
 <style>
-  .founder-card {
-    display: flex; gap: var(--spacing-small);
-    background: var(--color-gray-100);
-    border-radius: var(--site-content-border-radius);
-    padding: var(--spacing-small);
-    margin-bottom: var(--spacing-x-small);
-  }
+  .founder-card { display: flex; gap: var(--space-sm); }
   .founder-card__avatar {
     width: 4rem; height: 4rem; flex-shrink: 0;
-    background: var(--color-gray-200); border-radius: 0.5rem;
+    background: var(--color-sunken); border-radius: var(--radius-tile);
     display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--color-green);
-    font-family: var(--font-mono); font-size: var(--font-size-large);
-    font-weight: 700; color: var(--color-green); letter-spacing: -0.02em;
+    font-family: var(--font-mono); font-size: var(--text-body);
+    font-weight: var(--weight-medium); color: var(--color-brand);
+    border: 1px solid var(--color-border);
   }
   .founder-card__name {
-    font-size: var(--font-size-h5); font-weight: 500;
-    letter-spacing: var(--letter-spacing-h5); line-height: var(--line-height-h5);
+    font-size: var(--text-h3); font-weight: var(--weight-display);
+    line-height: var(--leading-display);
     margin-bottom: 0.25em;
   }
   .founder-card__role {
-    font-family: var(--font-mono); font-size: var(--font-size-x-small);
-    text-transform: uppercase; letter-spacing: -0.02em;
-    color: var(--color-green); display: block; margin-bottom: var(--spacing-tiny);
+    font-family: var(--font-mono); font-size: var(--text-caption);
+    text-transform: uppercase; letter-spacing: var(--tracking-label);
+    color: var(--color-brand); display: block; margin-bottom: var(--space-2xs);
   }
   .founder-card__bio {
-    font-size: var(--font-size-base); color: var(--color-gray-400);
-    line-height: 1.55; margin-bottom: var(--spacing-tiny);
+    font-size: var(--text-body); color: var(--color-muted-ink);
+    line-height: var(--leading-body); margin-bottom: var(--space-2xs);
+    font-family: var(--font-body);
   }
-  .founder-card__socials { display: flex; gap: var(--spacing-tiny); }
+  .founder-card__socials { display: flex; gap: var(--space-2xs); }
 </style>
