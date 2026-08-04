@@ -1,19 +1,20 @@
 <script lang="ts">
   import { stats } from '../data/content';
-  import { scrollReveal } from '../actions/scroll';
 </script>
 
-<section class="stats" use:scrollReveal={{ parallax: 30, threshold: 0.2 }}>
-  <div class="container">
-    <div class="section-header">
-      <span class="section-number">03</span>
-      <h2 class="section-title">Impact</h2>
+<section class="container">
+  <div style="padding: var(--spacing-x-large) 0;">
+    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+      <div class="col-12">
+        <span class="is-style-eyebrow" data-reveal>Logical Works in numbers</span>
+        <h2 class="section__headline" data-reveal>Our journey and impact.</h2>
+      </div>
     </div>
-    <div class="stats-grid">
-      {#each stats as stat, i (stat.label)}
-        <div class="stat" use:scrollReveal={{ parallax: 25, threshold: 0.15 }}>
-          <span class="stat-value">{stat.value}</span>
-          <span class="stat-label">{stat.label}</span>
+    <div class="grid">
+      {#each stats as stat (stat.label)}
+        <div class="stat-card col-3" data-reveal data-reveal-batch="true">
+          <div class="stat-card__value">{stat.value}</div>
+          <div class="stat-card__label">{stat.label}</div>
         </div>
       {/each}
     </div>
@@ -21,48 +22,24 @@
 </section>
 
 <style>
-  .stats {
-    padding: var(--space-section-y) 0;
-    border-top: 1px solid var(--paper-faint);
+  .stat-card {
+    background: var(--color-gray-100);
+    border-radius: var(--site-content-border-radius);
+    padding: var(--spacing-small);
+    margin-bottom: var(--spacing-x-small);
   }
-
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
+  .stat-card__value {
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-display-2);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-display-2);
+    line-height: var(--line-height-display-2);
+    color: var(--color-green);
+    margin-bottom: var(--spacing-tiny);
   }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  @media (min-width: 768px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-  .stat {
-    padding: var(--space-8) var(--space-6);
-    background: var(--ink-2);
-    border: 1px solid var(--paper-faint);
-  }
-
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: var(--fs-display-2);
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    line-height: 1;
-    color: var(--accent);
-    display: block;
-    margin-bottom: var(--space-4);
-  }
-
-  .stat-label {
-    font-size: var(--fs-base);
-    color: var(--paper-dim);
-    line-height: 1.5;
-    display: block;
+  .stat-card__label {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-gray-400);
   }
 </style>

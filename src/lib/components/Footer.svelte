@@ -1,88 +1,51 @@
+<!-- Afternow site-footer structure (sticky) -->
 <script lang="ts">
   import { siteConfig } from '../data/content';
 </script>
 
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <span class="footer-mark">◆</span>
-      <span class="footer-name">{siteConfig.name}</span>
-    </div>
-    <div class="footer-links">
-      <a href="#work">Work</a>
-      <a href="#services">Services</a>
-      <a href="#journal">Journal</a>
-      <a href="#team">Team</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="footer-meta">
-      <p>{siteConfig.location}</p>
-      <p class="footer-copy">© 2026 {siteConfig.name}. All rights reserved.</p>
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__bottom">
+      <div class="site-footer__logo-socials">
+        <span class="site-footer__logo">{siteConfig.name}</span>
+        <p class="site-footer__copyright">© 2026 {siteConfig.name}. All rights reserved.</p>
+      </div>
+      <div class="site-footer__legal">
+        <ul style="display: flex; gap: var(--spacing-tiny); list-style: none; padding: 0;">
+          <li><a href="#work" class="is-style-tag">Work</a></li>
+          <li><a href="#services" class="is-style-tag">Services</a></li>
+          <li><a href="#team" class="is-style-tag">Team</a></li>
+          <li><a href="#journal" class="is-style-tag">Journal</a></li>
+          <li><a href="#contact" class="is-style-tag">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </footer>
 
 <style>
-  .footer {
-    border-top: 1px solid var(--paper-faint);
-    padding: var(--space-16) var(--container-gutter);
-    max-width: var(--container-max);
-    margin: 0 auto;
+  .site-footer__bottom {
+    display: grid; gap: var(--spacing-small);
+    grid-template-columns: 1fr;
   }
-
-  .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-8);
+  @media (min-width: 992px) {
+    .site-footer__bottom { grid-template-columns: repeat(12, 1fr); }
+    .site-footer__bottom .site-footer__logo-socials { grid-column: span 7; }
+    .site-footer__bottom .site-footer__legal { grid-column: span 5; }
   }
-
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .footer-mark {
-    color: var(--accent);
-    font-size: 1.25rem;
-  }
-
-  .footer-name {
-    font-family: var(--font-display);
-    font-size: var(--fs-lg);
-    font-weight: 600;
+  .site-footer__logo {
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-large);
+    font-weight: 700;
     letter-spacing: -0.02em;
+    display: block;
+    margin-bottom: var(--spacing-tiny);
   }
-
-  .footer-links {
-    display: flex;
-    gap: var(--space-8);
-  }
-
-  .footer-links a {
+  .site-footer__copyright {
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--paper-dim);
-    text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-default);
+    font-size: var(--font-size-x-small);
+    color: var(--color-gray-400);
+    opacity: 0.6;
   }
-
-  .footer-links a:hover { color: var(--accent); }
-
-  .footer-meta {
-    text-align: right;
-    font-size: var(--fs-xs);
-    font-family: var(--font-mono);
-    color: var(--paper-faint);
-    line-height: 1.8;
-  }
-
-  .footer-copy { color: var(--paper-faint); }
-
-  @media (max-width: 640px) {
-    .footer-inner { flex-direction: column; align-items: flex-start; }
-    .footer-meta { text-align: left; }
-  }
+  .site-footer__legal ul { justify-content: flex-end; }
 </style>

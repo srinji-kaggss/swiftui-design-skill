@@ -1,147 +1,317 @@
-/* ─── Design Tokens ──────────────────────────────────────────────
-   Flat deep-contrast palette inspired by Design-I-like ("The Future
-   in Black"). Fluid type scale from afternow.co. Single warm accent.
-   No gradients, no glassmorphism, no web fonts.
-   ─────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — ported from afternow _afternow-base.css + lgwks
+   globals.css. Palette swapped to Design-I-like flat black/amber.
+   Structure is verbatim from source. Only colors + fonts changed.
+   ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Palette — flat, high-contrast black + warm cream */
-  --ink:         #0A0A0A;
-  --ink-2:       #141414;
-  --ink-3:       #1E1E1E;
-  --paper:       #FAFAF7;
-  --paper-dim:   #888888;
-  --paper-faint: #333333;
-  --accent:      #E8A700;
-  --accent-dim:  #8C6400;
+  /* ── Layout tokens (from afternow) ── */
+  --site-header-height: 3.875rem;
+  --site-content-border-radius: 0.75rem;
+  --site-logo-height: 2rem;
+  --content-width: min(52.5rem, 100%);
+  --grid-padding-x: clamp(1rem, 0.478rem + 1.739vw, 2rem);
 
-  /* Echo layer colours — the afternow pattern: stacked translucent
-     shapes behind the hero that react to scroll velocity */
-  --echo-1: #E8A700;
-  --echo-2: #C2410C;
-  --echo-3: #6B8A5E;
+  /* ── Motion tokens (from afternow + lgwks) ── */
+  --default-transition-easing: cubic-bezier(0.17, 0.17, 0.20, 1.00);
+  --default-transition-duration: 350ms;
+  --default-tags-gap: 0.25rem;
 
-  /* Typography — fluid clamp scale from afternow/lgwks */
-  --font-display: 'New York', 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  /* ── Palette: Design-I-like flat black + warm amber ── */
+  --color-black: #0A0A0A;
+  --color-white: #FAFAF7;
+  --color-gray-100: #141414;
+  --color-gray-200: #1E1E1E;
+  --color-gray-300: #333333;
+  --color-gray-400: #888888;
+  --color-gray-500: #888888;
+  --color-gray-600: #555555;
+  --color-gray-700: #AAAAAA;
+  --color-gray-800: #DDDDDD;
+  --color-gray-900: #FAFAF7;
 
-  /* Fluid type scale */
-  --fs-display:  clamp(3.625rem, 2.06rem + 5.217vw, 6.625rem);
-  --fs-display-2: clamp(2.75rem, 1.38rem + 4.565vw, 5.375rem);
-  --fs-h1:       clamp(2.125rem, 1.016rem + 3.696vw, 4.25rem);
-  --fs-h2:       clamp(1.875rem, 1.092rem + 2.609vw, 3.375rem);
-  --fs-h3:       clamp(1.625rem, 1.038rem + 1.957vw, 2.75rem);
-  --fs-h4:       clamp(1.375rem, 0.918rem + 1.522vw, 2.25rem);
-  --fs-h5:       clamp(1.25rem,  0.989rem + 0.87vw,  1.75rem);
-  --fs-h6:       clamp(1.125rem, 0.995rem + 0.435vw, 1.375rem);
-  --fs-xl:       clamp(1.25rem,  1.12rem + 0.435vw,  1.5rem);
-  --fs-lg:       clamp(1.125rem, 1.06rem + 0.217vw,  1.25rem);
-  --fs-base:     clamp(1rem,     0.935rem + 0.217vw, 1.125rem);
-  --fs-md:       clamp(0.875rem, 0.81rem + 0.217vw,  1rem);
-  --fs-sm:       clamp(0.813rem, 0.78rem + 0.109vw,  0.875rem);
-  --fs-xs:       0.75rem;
+  /* Echo layer colours */
+  --color-green: #E8A700;
+  --color-purple: #C2410C;
+  --color-yellow: #6B8A5E;
+  --color-orange: #E8A700;
+  --color-deep-blue: #333333;
+  --color-light-blue: #1E1E1E;
+  --color-malva: #141414;
+  --color-celeste: #333333;
+  --color-dark-moss: #0A0A0A;
 
-  /* Spacing — 4px base grid */
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-5:  1.25rem;
-  --space-6:  1.5rem;
-  --space-8:  2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-  --space-32: 8rem;
-  --space-40: 10rem;
-  --space-48: 12rem;
+  /* ── Typography (fluid scale from afternow, verbatim) ── */
+  --font-size-display-1: clamp(3.625rem, 2.06rem + 5.217vw, 6.625rem);
+  --font-size-display-2: clamp(2.75rem, 1.38rem + 4.565vw, 5.375rem);
+  --font-size-h1: clamp(2.125rem, 1.016rem + 3.696vw, 4.25rem);
+  --font-size-h2: clamp(1.875rem, 1.092rem + 2.609vw, 3.375rem);
+  --font-size-h3: clamp(1.625rem, 1.038rem + 1.957vw, 2.75rem);
+  --font-size-h4: clamp(1.375rem, 0.918rem + 1.522vw, 2.25rem);
+  --font-size-h5: clamp(1.25rem, 0.989rem + 0.87vw, 1.75rem);
+  --font-size-h6: clamp(1.125rem, 0.995rem + 0.435vw, 1.375rem);
+  --font-size-x-large: clamp(1.25rem, 1.12rem + 0.435vw, 1.5rem);
+  --font-size-large: clamp(1.125rem, 1.06rem + 0.217vw, 1.25rem);
+  --font-size-base: clamp(1rem, 0.935rem + 0.217vw, 1.125rem);
+  --font-size-medium: clamp(0.875rem, 0.81rem + 0.217vw, 1rem);
+  --font-size-small: clamp(0.813rem, 0.78rem + 0.109vw, 0.875rem);
+  --font-size-x-small: 0.75rem;
 
-  /* Semantic */
-  --space-section-y: clamp(3.375rem, 2.005rem + 4.565vw, 6rem);
-  --container-max:    72rem;
-  --container-gutter: clamp(1rem, 0.478rem + 1.739vw, 2rem);
-  --content-max:      min(52.5rem, 100%);
+  --line-height-display-1: 1.09;
+  --line-height-display-2: 1.09;
+  --line-height-h1: 1.09;
+  --line-height-h2: 1.11;
+  --line-height-h3: 1.11;
+  --line-height-h4: 1.11;
+  --line-height-h5: 1.11;
+  --line-height-h6: 1.2;
+  --line-height-x-large: 1.3;
+  --line-height-large: 1.35;
+  --line-height-base: 1.4;
+  --line-height-medium: 1.45;
+  --line-height-small: 1.5;
+  --line-height-x-small: 1.5;
 
-  /* Motion */
-  --ease-default:  cubic-bezier(0.17, 0.17, 0.20, 1.00);
-  --ease-spring:   cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
-  --dur-fast:      160ms;
-  --dur-base:      350ms;
-  --dur-moderate:  500ms;
-  --dur-slow:      650ms;
-  --dur-enter:     680ms;
+  --letter-spacing-display-1: -0.05em;
+  --letter-spacing-display-2: -0.05em;
+  --letter-spacing-h1: -0.05em;
+  --letter-spacing-h2: -0.04em;
+  --letter-spacing-h3: -0.04em;
+  --letter-spacing-h4: -0.04em;
+  --letter-spacing-h5: -0.03em;
+  --letter-spacing-h6: -0.03em;
+  --letter-spacing-x-large: -0.025em;
+  --letter-spacing-large: -0.02em;
+  --letter-spacing-base: -0.02em;
+  --letter-spacing-medium: -0.02em;
+  --letter-spacing-small: -0.02em;
+  --letter-spacing-x-small: -0.02em;
+
+  --headings-font-weight: 500;
+
+  /* ── Spacing (from afternow, verbatim) ── */
+  --spacing-x-tiny: 0.25rem;
+  --spacing-tiny: 0.5rem;
+  --spacing-3-x-small: 0.75rem;
+  --spacing-2-x-small: clamp(0.875rem, 0.81rem + 0.217vw, 1rem);
+  --spacing-x-small: clamp(1rem, 0.739rem + 0.87vw, 1.5rem);
+  --spacing-small: clamp(1.5rem, 1.239rem + 0.87vw, 2rem);
+  --spacing-medium: clamp(2rem, 1.739rem + 0.87vw, 2.5rem);
+  --spacing-medium-large: clamp(2.625rem, 1.908rem + 2.391vw, 4rem);
+  --spacing-large: clamp(3.375rem, 2.005rem + 4.565vw, 6rem);
+  --spacing-x-large: clamp(4rem, 1.913rem + 6.957vw, 8rem);
+  --spacing-2-x-large: clamp(6.25rem, 4.293rem + 6.522vw, 10rem);
+  --spacing-3-x-large: clamp(7.75rem, 5.533rem + 7.391vw, 12rem);
+  --spacing-huge: clamp(9rem, 5.348rem + 12.174vw, 16rem);
+  --spacing-gigantic: clamp(11.25rem, 6.685rem + 15.217vw, 20rem);
+
+  /* ── Font families (no web fonts — system only) ── */
+  --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-secondary: "New York", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+  /* ── Header ── */
+  --header-bg-color: var(--color-black);
+  --header-color: var(--color-white);
 }
 
-/* ─── Reset ──────────────────────────────────────────────────── */
+/* ═══ RESET (from afternow) ═══ */
 
 *, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeSpeed;
+  scrollbar-gutter: stable;
 }
 
 body {
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-body);
-  font-size: var(--fs-base);
-  line-height: 1.5;
-  letter-spacing: -0.02em;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-base);
+  line-height: var(--line-height-base);
   overflow-x: hidden;
 }
 
-::selection {
-  background: var(--accent);
-  color: var(--ink);
+img, picture, video {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
+button, input, select, textarea {
+  color: inherit;
+  font: inherit;
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-black);
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.15em;
+  transition: color 0.25s ease, text-decoration 0.25s ease;
+}
+
+a:hover { text-decoration-color: currentColor; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 0.1em; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  font-weight: var(--headings-font-weight);
+  text-wrap: pretty;
+}
+
+/* ═══ SHARED CLASSES (ported from afternow _afternow-base.css) ═══ */
+
+.has-content-width { max-width: var(--content-width); }
+.container, .has-content-width { margin-left: auto; margin-right: auto; }
+.container { padding: 0 var(--grid-padding-x); width: 100%; }
+
+.grid {
+  align-items: flex-start;
+  column-gap: var(--spacing-x-small);
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.grid > * { min-width: 0; }
+
+@media (min-width: 768px) {
+  .grid.grid-columns--2, .grid.grid-columns--3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 992px) {
+  .grid.grid-columns--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid { grid-template-columns: repeat(12, 1fr); }
+  .grid .col-1 { grid-column: span 1; }
+  .grid .col-2 { grid-column: span 2; }
+  .grid .col-3 { grid-column: span 3; }
+  .grid .col-4 { grid-column: span 4; }
+  .grid .col-5 { grid-column: span 5; }
+  .grid .col-6 { grid-column: span 6; }
+  .grid .col-7 { grid-column: span 7; }
+  .grid .col-8 { grid-column: span 8; }
+  .grid .col-9 { grid-column: span 9; }
+  .grid .col-10 { grid-column: span 10; }
+  .grid .col-11 { grid-column: span 11; }
+  .grid .col-12 { grid-column: span 12; }
+}
+
+/* ── Eyebrow (from afternow) ── */
+.is-style-eyebrow {
+  color: var(--color-gray-400);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-medium);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: var(--spacing-small);
+  width: fit-content;
+}
+
+/* ── Tag pills (from afternow) ── */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--default-tags-gap);
+  padding: 0;
+}
+.tag-list > * {
+  backdrop-filter: blur(0.2em);
+  background: var(--color-gray-100);
+  border-radius: 1.5rem;
+  color: var(--color-white);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-x-small);
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.65em 1em;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.3s var(--default-transition-easing), color 0.3s var(--default-transition-easing), border-radius 0.3s var(--default-transition-easing);
+  width: fit-content;
+}
+.tag-list > *:nth-child(2n) { border-radius: 0; }
+.tag-list > *:is(a, button):hover { background: var(--color-gray-200); }
+
+.is-style-tag {
+  backdrop-filter: blur(0.2em);
+  background: var(--color-gray-100);
+  border-radius: 1.5rem;
+  color: var(--color-white);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-x-small);
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.65em 1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.3s var(--default-transition-easing), color 0.3s var(--default-transition-easing), border-radius 0.3s var(--default-transition-easing);
+  width: fit-content;
+}
+
+/* ── Echo layers (from afternow _afternow-base.css, verbatim) ── */
+.echo { pointer-events: none; z-index: -2; }
+.echo, .echo__layer { border-radius: inherit; inset: 0; position: absolute; }
+.echo__layer {
+  --echo-color: var(--color-purple);
+  backface-visibility: hidden;
+  background-color: var(--echo-color);
+  display: block;
+  will-change: transform;
+  z-index: 0;
+}
+.echo__layer:first-child { --echo-color: var(--color-purple); z-index: -1; }
+.echo__layer:nth-child(2) { --echo-color: var(--color-yellow); z-index: -2; }
+
+/* ── Scroll reveal (from lgwks globals.css, verbatim) ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-animate] .line { margin-bottom: -0.1em; padding-bottom: 0.1em; }
+
+/* ── Section structure (from afternow) ── */
+.section__headline {
+  font-size: var(--font-size-h4);
+  letter-spacing: var(--letter-spacing-h4);
+  line-height: var(--line-height-h4);
+  max-width: 45ch;
+  text-wrap: pretty;
+}
+
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
-}
-
-/* Shared section header pattern */
-.section-header {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-4);
-  margin-bottom: var(--space-24);
-}
-
-.section-number {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  color: var(--accent);
-  letter-spacing: 0;
-}
-
-.section-title {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-}
-
-/* Eyebrow label */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  display: block;
-  margin-bottom: var(--space-4);
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

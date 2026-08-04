@@ -1,30 +1,26 @@
 <script lang="ts">
   import { founders } from '../data/content';
-  import { scrollReveal } from '../actions/scroll';
 </script>
 
-<section id="team" class="team">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-number">04</span>
-      <h2 class="section-title">The Team</h2>
+<section id="team" class="container">
+  <div style="padding: var(--spacing-x-large) 0;">
+    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+      <div class="col-12">
+        <span class="is-style-eyebrow" data-reveal>The team</span>
+        <h2 class="section__headline" data-reveal>The people behind the work.</h2>
+      </div>
     </div>
-    <div class="founders-grid">
+    <div class="grid">
       {#each founders as founder, i (founder.name)}
-        <article
-          class="founder"
-          use:scrollReveal={{ parallax: 35, rotation: i === 0 ? -1 : 1, threshold: 0.15 }}
-        >
-          <div class="founder-avatar" style="--accent-hue: {i === 0 ? 'var(--echo-1)' : 'var(--echo-3)'}">
-            <span>{founder.initials}</span>
-          </div>
-          <div class="founder-info">
-            <h3 class="founder-name">{founder.name}</h3>
-            <span class="founder-role">{founder.role}</span>
-            <p class="founder-bio">{founder.bio}</p>
-            <div class="founder-socials">
+        <article class="founder-card col-6" data-reveal data-reveal-batch="true">
+          <div class="founder-card__avatar">{founder.initials}</div>
+          <div class="founder-card__info">
+            <h3 class="founder-card__name">{founder.name}</h3>
+            <span class="founder-card__role">{founder.role}</span>
+            <p class="founder-card__bio">{founder.bio}</p>
+            <div class="founder-card__socials">
               {#each founder.socials as social (social.label)}
-                <a href={social.url} target="_blank" rel="noopener noreferrer">{social.label}</a>
+                <a href={social.url} target="_blank" rel="noopener noreferrer" class="is-style-tag">{social.label}</a>
               {/each}
             </div>
           </div>
@@ -35,95 +31,36 @@
 </section>
 
 <style>
-  .team {
-    padding: var(--space-section-y) 0;
-    border-top: 1px solid var(--paper-faint);
+  .founder-card {
+    display: flex; gap: var(--spacing-small);
+    background: var(--color-gray-100);
+    border-radius: var(--site-content-border-radius);
+    padding: var(--spacing-small);
+    margin-bottom: var(--spacing-x-small);
   }
-
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
+  .founder-card__avatar {
+    width: 4rem; height: 4rem; flex-shrink: 0;
+    background: var(--color-gray-200); border-radius: 0.5rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--color-green);
   }
-
-  .founders-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
+  .founder-card__avatar {
+    font-family: var(--font-mono); font-size: var(--font-size-large);
+    font-weight: 700; color: var(--color-green); letter-spacing: -0.02em;
   }
-
-  @media (min-width: 768px) {
-    .founders-grid { grid-template-columns: 1fr 1fr; }
+  .founder-card__name {
+    font-size: var(--font-size-h5); font-weight: 500;
+    letter-spacing: var(--letter-spacing-h5); line-height: var(--line-height-h5);
+    margin-bottom: 0.25em;
   }
-
-  .founder {
-    display: flex;
-    gap: var(--space-6);
-    background: var(--ink-2);
-    border: 1px solid var(--paper-faint);
-    padding: var(--space-8);
-    transition: border-color var(--dur-base) var(--ease-default);
+  .founder-card__role {
+    font-family: var(--font-mono); font-size: var(--font-size-x-small);
+    text-transform: uppercase; letter-spacing: -0.02em;
+    color: var(--color-green); display: block; margin-bottom: var(--spacing-tiny);
   }
-
-  .founder:hover { border-color: var(--accent); }
-
-  .founder-avatar {
-    width: 4rem;
-    height: 4rem;
-    flex-shrink: 0;
-    background: var(--ink-3);
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--accent-hue, var(--accent));
+  .founder-card__bio {
+    font-size: var(--font-size-base); color: var(--color-gray-400);
+    line-height: 1.55; margin-bottom: var(--spacing-tiny);
   }
-
-  .founder-avatar span {
-    font-family: var(--font-mono);
-    font-size: var(--fs-lg);
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
-
-  .founder-name {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-1);
-  }
-
-  .founder-role {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    display: block;
-    margin-bottom: var(--space-4);
-  }
-
-  .founder-bio {
-    font-size: var(--fs-base);
-    color: var(--paper-dim);
-    line-height: 1.55;
-    margin-bottom: var(--space-4);
-  }
-
-  .founder-socials {
-    display: flex;
-    gap: var(--space-4);
-  }
-
-  .founder-socials a {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--paper-dim);
-    text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-default);
-  }
-
-  .founder-socials a:hover { color: var(--accent); }
+  .founder-card__socials { display: flex; gap: var(--spacing-tiny); }
 </style>

@@ -1,58 +1,58 @@
+<!-- Afternow archive-item-work structure + lgwks case data -->
 <script lang="ts">
   import { caseStudies } from '../data/content';
-  import { scrollReveal } from '../actions/scroll';
 </script>
 
-<section id="work" class="work">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-number">02</span>
-      <h2 class="section-title">Selected Work</h2>
+<section id="work" class="container">
+  <div style="padding: var(--spacing-x-large) 0;">
+    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+      <div class="col-12">
+        <span class="is-style-eyebrow" data-reveal>Selected work</span>
+        <h2 class="section__headline" data-reveal>Work that moves the needle.</h2>
+      </div>
     </div>
-    <p class="section-intro">Work that moves the needle. Every engagement grounded in research, executed with craft.</p>
-    <div class="case-list">
+    <div class="home-work__grid">
       {#each caseStudies as cs, i (cs.slug)}
-        <article
-          class="case"
-          use:scrollReveal={{ parallax: 50, rotation: i % 2 === 0 ? -1 : 1, scale: [0.96, 1], threshold: 0.1 }}
-        >
-          <div class="case-header">
-            <span class="case-num">{String(i + 1).padStart(2, '0')}</span>
-            <div class="case-meta">
-              <span class="case-category">{cs.category}</span>
-              <span class="case-year">{cs.year}</span>
+        <article class="archive-item-work" data-reveal data-reveal-batch="true" data-cursor data-cursor-text="View">
+          <div class="archive-item-work__feat-media">
+            <div class="work-media-placeholder" style="--bg-{i}: var(--color-gray-{200 + (i % 3) * 100})">
+              <div class="work-media-inner" style="background: hsl({i * 60}, 15%, 12%)"></div>
             </div>
           </div>
-          <h3 class="case-client">{cs.client}</h3>
-          <h4 class="case-title">{cs.title}</h4>
-          <p class="case-body">{cs.body}</p>
-          <details class="case-details">
-            <summary>Read the case study</summary>
-            <div class="case-detail-body">
-              <div class="detail-block">
-                <span class="detail-label">Challenge</span>
-                <p>{cs.challenge}</p>
-              </div>
-              <div class="detail-block">
-                <span class="detail-label">Approach</span>
-                <p>{cs.solution}</p>
-              </div>
-              <div class="detail-block">
-                <span class="detail-label">Outcome</span>
-                <ul>
-                  {#each cs.results as result (result)}
-                    <li>{result}</li>
-                  {/each}
-                </ul>
-              </div>
-              {#if cs.testimonial}
-                <blockquote class="testimonial">
-                  <p>"{cs.testimonial}"</p>
-                  <cite>— {cs.testimonialAttribution}</cite>
-                </blockquote>
-              {/if}
+          <div class="archive-item-work__content">
+            <div class="tag-list" style="margin-bottom: var(--spacing-3-x-small)">
+              <span class="archive-item-work__service">{cs.category}</span>
             </div>
-          </details>
+            <h3 class="archive-item-work__title">{cs.client} — {cs.title}</h3>
+            <p class="archive-item-work__description">{cs.body}</p>
+            <details class="case-details">
+              <summary class="btn btn--link btn-sm" style="margin-top: var(--spacing-tiny)">Read case study</summary>
+              <div style="padding-top: var(--spacing-small)">
+                <div style="margin-bottom: var(--spacing-small)">
+                  <span class="is-style-eyebrow">Challenge</span>
+                  <p style="color: var(--color-gray-400); font-size: var(--font-size-base); line-height: 1.6;">{cs.challenge}</p>
+                </div>
+                <div style="margin-bottom: var(--spacing-small)">
+                  <span class="is-style-eyebrow">Approach</span>
+                  <p style="color: var(--color-gray-400); font-size: var(--font-size-base); line-height: 1.6;">{cs.solution}</p>
+                </div>
+                <div style="margin-bottom: var(--spacing-small)">
+                  <span class="is-style-eyebrow">Outcome</span>
+                  <ul style="list-style: none; padding: 0;">
+                    {#each cs.results as result (result)}
+                      <li style="padding: 0.5rem 0; border-top: 1px solid var(--color-gray-300); color: var(--color-white);">{result}</li>
+                    {/each}
+                  </ul>
+                </div>
+                {#if cs.testimonial}
+                  <blockquote style="border-left: 2px solid var(--color-green); padding-left: var(--spacing-small); margin-top: var(--spacing-small);">
+                    <p style="font-family: var(--font-secondary); font-size: var(--font-size-h6); font-style: italic; line-height: 1.4; color: var(--color-white); margin-bottom: var(--spacing-tiny)">"{cs.testimonial}"</p>
+                    <cite style="font-family: var(--font-mono); font-size: var(--font-size-x-small); color: var(--color-gray-400); font-style: normal;">— {cs.testimonialAttribution}</cite>
+                  </blockquote>
+                {/if}
+              </div>
+            </details>
+          </div>
         </article>
       {/each}
     </div>
@@ -60,165 +60,19 @@
 </section>
 
 <style>
-  .work {
-    padding: var(--space-section-y) 0;
-    border-top: 1px solid var(--paper-faint);
-  }
-
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
-  }
-
-  .section-intro {
-    font-size: var(--fs-xl);
-    color: var(--paper-dim);
-    max-width: 42rem;
-    margin-bottom: var(--space-24);
-    line-height: 1.5;
-  }
-
-  .case-list {
-    display: grid;
+  .home-work__grid {
+    display: grid; gap: var(--spacing-large) var(--spacing-x-small);
     grid-template-columns: 1fr;
-    gap: var(--space-3);
   }
-
-  @media (min-width: 1024px) {
-    .case-list { grid-template-columns: 1fr 1fr; }
+  @media (min-width: 768px) { .home-work__grid { grid-template-columns: 1fr 1fr; } }
+  .work-media-placeholder {
+    aspect-ratio: 4/3; border-radius: 0.75rem; overflow: hidden;
   }
-
-  .case {
-    position: relative;
-    background: var(--ink-2);
-    border: 1px solid var(--paper-faint);
-    padding: var(--space-8);
-    overflow: hidden;
-    transition: border-color var(--dur-base) var(--ease-default), background var(--dur-base) var(--ease-default);
+  .work-media-inner {
+    width: 100%; height: 100%; transition: transform 0.2s linear;
   }
-
-  .case:hover {
-    border-color: var(--accent);
-    background: var(--ink-3);
-  }
-
-  .case-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-6);
-  }
-
-  .case-num {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--paper-faint);
-  }
-
-  .case-meta {
-    display: flex;
-    gap: var(--space-4);
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-  }
-
-  .case-category { color: var(--paper-dim); }
-  .case-year { color: var(--paper-faint); }
-
-  .case-client {
-    font-family: var(--font-display);
-    font-size: var(--fs-display-2);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    margin-bottom: var(--space-2);
-  }
-
-  .case-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h5);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--paper-dim);
-    margin-bottom: var(--space-4);
-  }
-
-  .case-body {
-    font-size: var(--fs-base);
-    color: var(--paper-dim);
-    line-height: 1.55;
-    margin-bottom: var(--space-6);
-  }
-
-  .case-details summary {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    cursor: pointer;
-    user-select: none;
-    padding: var(--space-2) 0;
-    border-top: 1px solid var(--paper-faint);
-  }
-
-  .case-detail-body {
-    padding-top: var(--space-6);
-  }
-
-  .detail-block {
-    margin-bottom: var(--space-6);
-  }
-
-  .detail-label {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    display: block;
-    margin-bottom: var(--space-2);
-  }
-
-  .detail-block p {
-    font-size: var(--fs-base);
-    color: var(--paper-dim);
-    line-height: 1.6;
-  }
-
-  .detail-block ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .detail-block li {
-    font-size: var(--fs-base);
-    color: var(--paper);
-    padding: var(--space-2) 0;
-    border-bottom: 1px solid var(--paper-faint);
-  }
-
-  .testimonial {
-    border-left: 2px solid var(--accent);
-    padding-left: var(--space-6);
-    margin-top: var(--space-8);
-  }
-
-  .testimonial p {
-    font-family: var(--font-display);
-    font-size: var(--fs-h6);
-    font-style: italic;
-    line-height: 1.4;
-    color: var(--paper);
-    margin-bottom: var(--space-3);
-  }
-
-  .testimonial cite {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--paper-dim);
-    font-style: normal;
-  }
+  .archive-item-work:hover .work-media-inner { transform: scale(1.05); }
+  .case-details summary { list-style: none; }
+  .case-details summary::-webkit-details-marker { display: none; }
+  .case-details[open] summary { margin-bottom: var(--spacing-tiny); }
 </style>

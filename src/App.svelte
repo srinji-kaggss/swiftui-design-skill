@@ -1,5 +1,9 @@
 <script lang="ts">
   import './lib/tokens.css';
+  import './lib/styles/base.css';
+  import { scrollRevealAll } from './lib/actions/scroll';
+  import Preloader from './lib/components/Preloader.svelte';
+  import CustomCursor from './lib/components/CustomCursor.svelte';
   import Header from './lib/components/Header.svelte';
   import Hero from './lib/components/Hero.svelte';
   import Intro from './lib/components/Intro.svelte';
@@ -12,15 +16,19 @@
   import Footer from './lib/components/Footer.svelte';
 </script>
 
+<Preloader />
+<CustomCursor />
 <Header />
-<main>
-  <Hero />
-  <Intro />
-  <Capabilities />
-  <Work />
-  <Stats />
-  <Team />
-  <Journal />
-</main>
-<Contact />
-<Footer />
+<div use:scrollRevealAll>
+  <main class="home-content">
+    <Hero />
+    <Intro />
+    <Capabilities />
+    <Work />
+    <Stats />
+    <Team />
+    <Journal />
+  </main>
+  <Contact />
+  <Footer />
+</div>

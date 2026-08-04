@@ -1,279 +1,95 @@
 /**
- * Scroll-reactive animation actions for Svelte 5.
- *
- * Three primitives, zero dependencies:
- *
- *  1. scrollReveal   — IntersectionObserver-triggered reveal (opacity + transform)
- *  2. scrollParallax  — continuous scroll-driven parallax offset
- *  3. lineReveal      — splits a heading into line spans, reveals them
- *                       staggered as the element enters the viewport
- *  4. echoLayers     — the afternow pattern: stacked coloured shapes behind
- *                       a hero element that scale up briefly when scroll
- *                       velocity spikes, then settle back.
+ * Scroll actions — ported from lgwks-frontend.
  */
 
-/* ─── 1. Scroll Reveal ─────────────────────────────────────── */
+/* ─── 1. Scroll Reveal (from lgwks useScrollReveal.ts) ────── */
+/* Called once on the root container. Finds ALL [data-reveal] children. */
 
-interface ScrollRevealOptions {
-  scale?: [number, number];
-  parallax?: number;
-  rotation?: number;
-  startOpacity?: number;
-  threshold?: number;
-  duration?: number;
-}
-
-const revealDefaults: Required<ScrollRevealOptions> = {
-  scale: [0.95, 1],
-  parallax: 40,
-  rotation: 0,
-  startOpacity: 0,
-  threshold: 0.12,
-  duration: 650,
-};
-
-export function scrollReveal(node: HTMLElement, options?: ScrollRevealOptions) {
-  const opts = { ...revealDefaults, ...options };
+export function scrollRevealAll(node: HTMLElement) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const elements = Array.from(node.querySelectorAll<HTMLElement>('[data-reveal]'));
 
   if (reduced) {
-    node.style.opacity = '1';
-    node.style.transform = 'none';
+    elements.forEach(el => el.classList.add('is-revealed'));
     return { destroy() {} };
   }
 
-  node.style.opacity = String(opts.startOpacity);
-  node.style.transform = `translateY(${opts.parallax}px) scale(${opts.scale[0]}) rotate(${opts.rotation}deg)`;
-  node.style.transformOrigin = 'center center';
-  node.style.willChange = 'transform, opacity';
-  node.style.transition = `opacity ${opts.duration}ms var(--ease-spring), transform ${opts.duration}ms var(--ease-spring)`;
-
-  let visible = false;
+  if (elements.length === 0) return { destroy() {} };
 
   const observer = new IntersectionObserver(
     (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting && !visible) {
-          visible = true;
-          requestAnimationFrame(() => {
-            node.style.opacity = '1';
-            node.style.transform = `translateY(0) scale(${opts.scale[1]}) rotate(0deg)`;
-          });
-        } else if (!entry.isIntersecting && visible) {
-          visible = false;
-          node.style.opacity = String(opts.startOpacity);
-          node.style.transform = `translateY(${opts.parallax}px) scale(${opts.scale[0]}) rotate(${opts.rotation}deg)`;
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = entry.target as HTMLElement;
+        const delayAttr = target.dataset.revealDelay;
+        const batchAttr = target.dataset.revealBatch;
+
+        let delayMs = 0;
+        if (delayAttr) {
+          const parsed = parseInt(delayAttr, 10);
+          if (!Number.isNaN(parsed)) delayMs = parsed;
         }
-      }
-    },
-    { threshold: opts.threshold, rootMargin: '-6% 0px -6% 0px' },
-  );
 
-  observer.observe(node);
+        if (batchAttr === 'true') {
+          const parent = target.parentElement;
+          if (parent) {
+            const siblings = Array.from(parent.querySelectorAll<HTMLElement>('[data-reveal]'));
+            const index = siblings.indexOf(target);
+            delayMs += index * 80;
+          }
+        }
 
-  return {
-    destroy() {
-      observer.disconnect();
-    },
-  };
-}
+        if (delayMs > 0) {
+          setTimeout(() => target.classList.add('is-revealed'), delayMs);
+        } else {
+          target.classList.add('is-revealed');
+        }
 
-/* ─── 2. Continuous Parallax ──────────────────────────────── */
-
-export function scrollParallax(node: HTMLElement, intensity: number = 0.3) {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return { destroy() {} };
-
-  let ticking = false;
-  node.style.willChange = 'transform';
-
-  function update() {
-    const rect = node.getBoundingClientRect();
-    const viewportH = window.innerHeight;
-    const progress = (viewportH - rect.top) / (viewportH + rect.height);
-    const clamped = Math.max(0, Math.min(1, progress));
-    const offset = (0.5 - clamped) * 100 * intensity;
-    node.style.transform = `translateY(${offset}px)`;
-  }
-
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
+        observer.unobserve(target);
       });
-      ticking = true;
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  update();
-
-  return {
-    destroy() {
-      window.removeEventListener('scroll', onScroll);
     },
-  };
-}
-
-/* ─── 3. Line Reveal ────────────────────────────────────────── */
-/**
- * Splits the text content of a heading into line-based spans,
- * then reveals them with a staggered upward clip as the element
- * enters the viewport. Inspired by afternow's SplitText hero.
- */
-
-export function lineReveal(node: HTMLElement, stagger: number = 0.15) {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Split into words first, wrapping each in an inline-block span
-  const text = node.textContent ?? '';
-  const words = text.split(' ');
-
-  node.innerHTML = '';
-  node.style.position = 'relative';
-
-  const lineWrap = document.createElement('span');
-  lineWrap.style.display = 'block';
-  lineWrap.style.overflow = 'hidden';
-
-  for (let i = 0; i < words.length; i++) {
-    const wordSpan = document.createElement('span');
-    wordSpan.style.display = 'inline-block';
-    wordSpan.style.willChange = 'transform, opacity';
-    wordSpan.textContent = words[i];
-
-    if (reduced) {
-      wordSpan.style.opacity = '1';
-      wordSpan.style.transform = 'none';
-    } else {
-      wordSpan.style.opacity = '0';
-      wordSpan.style.transform = 'translateY(110%)';
-      wordSpan.style.transition = `opacity 600ms var(--ease-spring), transform 800ms var(--ease-spring)`;
-    }
-
-    lineWrap.appendChild(wordSpan);
-    if (i < words.length - 1) {
-      lineWrap.appendChild(document.createTextNode(' '));
-    }
-  }
-
-  node.appendChild(lineWrap);
-
-  if (reduced) return { destroy() {} };
-
-  let revealed = false;
-  const wordSpans = Array.from(lineWrap.querySelectorAll('span'));
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting && !revealed) {
-          revealed = true;
-          wordSpans.forEach((span, i) => {
-            setTimeout(() => {
-              span.style.opacity = '1';
-              span.style.transform = 'translateY(0)';
-            }, i * stagger * 1000);
-          });
-          observer.unobserve(node);
-        }
-      }
-    },
-    { threshold: 0.2 },
+    { threshold: 0.1 },
   );
 
-  observer.observe(node);
+  elements.forEach((el) => observer.observe(el));
 
-  return {
-    destroy() {
-      observer.disconnect();
-    },
-  };
+  return { destroy() { observer.disconnect(); } };
 }
 
-/* ─── 4. Echo Layers ────────────────────────────────────────── */
-/**
- * The "moves with me" effect from afternow.co:
- * Stacked coloured shapes behind a hero element. When the user
- * scrolls with velocity, the layers briefly scale up (by an amount
- * proportional to scroll speed and layer depth), then settle back
- * with a spring ease. Also applies a continuous parallax offset
- * as the hero section scrolls through the viewport.
- */
+/* ─── 2. Echo Layers (from afternow home.js scroll velocity) ── */
 
 export function echoLayers(node: HTMLElement, options?: {
   colors?: string[];
   intensity?: number;
 }) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const colors = options?.colors ?? [
-    'var(--echo-1)',
-    'var(--echo-2)',
-    'var(--echo-3)',
-  ];
+  const colors = options?.colors ?? ['var(--color-purple)', 'var(--color-yellow)', 'var(--color-green)'];
   const intensity = options?.intensity ?? 1;
 
-  // Create the layer elements inside the node
   const layers: HTMLElement[] = [];
-  const cssColors = colors.map(c =>
-    c.startsWith('var(') ? c : c.startsWith('#') ? c : `var(--echo-${c})`,
-  );
-
-  for (let i = 0; i < cssColors.length; i++) {
+  for (let i = 0; i < colors.length; i++) {
     const layer = document.createElement('span');
-    layer.className = 'echo-layer';
-    layer.style.cssText = `
-      position: absolute;
-      inset: 0;
-      background: ${cssColors[i]};
-      border-radius: inherit;
-      opacity: 0;
-      will-change: transform, opacity;
-      transform: scale(0.8);
-      z-index: ${-i - 1};
-      backface-visibility: hidden;
-    `;
+    layer.className = 'echo__layer';
+    layer.style.setProperty('--echo-color', colors[i]);
     node.insertBefore(layer, node.firstChild);
     layers.push(layer);
   }
 
-  if (reduced) {
-    layers.forEach((l, i) => {
-      l.style.opacity = String(0.4 - i * 0.1);
-      l.style.transform = `translateX(${(i + 1) * 8}px) translateY(${(i + 1) * 8}px) scale(1)`;
-    });
-    return { destroy() {} };
-  }
-
-  // Set initial state
-  layers.forEach((layer, i) => {
-    layer.style.opacity = String(0.3 - i * 0.06);
-    layer.style.transform = `translateX(${(i + 1) * 12 * intensity}px) translateY(${(i + 1) * 12 * intensity}px) scale(1)`;
-  });
+  if (reduced) return { destroy() {} };
 
   let lastScrollY = window.scrollY;
   let velocity = 0;
   let ticking = false;
-  let settleTimers: ReturnType<typeof setTimeout>[] = [];
-
-  function clearSettleTimers() {
-    settleTimers.forEach(t => clearTimeout(t));
-    settleTimers = [];
-  }
 
   function update() {
     const currentY = window.scrollY;
     const delta = currentY - lastScrollY;
-    // Smooth the velocity (exponential moving average)
     velocity = velocity * 0.7 + delta * 0.3;
     lastScrollY = currentY;
 
     const absV = Math.abs(velocity);
     const velocityFactor = Math.min(absV / 8000, 0.3);
 
-    // Also compute a steady parallax based on hero position
     const rect = node.getBoundingClientRect();
     const viewportH = window.innerHeight;
     const progress = (viewportH - rect.top) / (viewportH + rect.height);
@@ -283,38 +99,16 @@ export function echoLayers(node: HTMLElement, options?: {
       const depth = (i + 1) * 0.5;
       const scaleBoost = 1 + velocityFactor * depth;
       const drift = (i + 1) * 12 * intensity + parallaxOffset * (i + 1);
-
       layer.style.transform = `translateX(${drift}px) translateY(${drift}px) scale(${scaleBoost})`;
+      layer.style.opacity = String(0.3 - i * 0.06);
     });
 
-    // Settle back over a short duration if velocity is low
-    clearSettleTimers();
-    settleTimers.push(
-      setTimeout(() => {
-        if (Math.abs(velocity) < 1) return;
-        layers.forEach((layer, i) => {
-          const drift = (i + 1) * 12 * intensity + parallaxOffset * (i + 1);
-          layer.style.transition = 'transform 300ms var(--ease-spring)';
-          layer.style.transform = `translateX(${drift}px) translateY(${drift}px) scale(1)`;
-        });
-        settleTimers.push(
-          setTimeout(() => {
-            layers.forEach(l => (l.style.transition = ''));
-          }, 320),
-        );
-      }, 80),
-    );
-
-    // Decay velocity
     velocity *= 0.8;
   }
 
   function onScroll() {
     if (!ticking) {
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
-      });
+      requestAnimationFrame(() => { update(); ticking = false; });
       ticking = true;
     }
   }
@@ -322,21 +116,163 @@ export function echoLayers(node: HTMLElement, options?: {
   window.addEventListener('scroll', onScroll, { passive: true });
   update();
 
-  return {
-    destroy() {
-      window.removeEventListener('scroll', onScroll);
-      clearSettleTimers();
-    },
-  };
+  return { destroy() { window.removeEventListener('scroll', onScroll); } };
 }
 
-/* ─── 5. Pin Hero ───────────────────────────────────────────── */
-/**
- * Pins the hero section using position: sticky so it stays in place
- * while background layers scroll past. Combined with echoLayers,
- * this creates the "hero holds while the world moves" effect
- * from afternow's GSAP ScrollTrigger pin.
- *
- * Uses native CSS sticky — no JS scroll listener needed.
- * The CSS for this lives in Hero.svelte's <style> block.
- */
+/* ─── 3. Letter Hero Title (from lgwks AnimatedHeroTitle) ──── */
+
+export function letterTitle(node: HTMLElement, stagger: number = 45) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const text = node.textContent ?? '';
+  const words = text.trim().split(/\s+/);
+
+  const wordOffsets = words.reduce<number[]>((offsets, word, index) => {
+    const prev = offsets[index - 1] ?? 0;
+    const prevLen = words[index - 1]?.length ?? 0;
+    offsets.push(index === 0 ? 0 : prev + prevLen + 1);
+    return offsets;
+  }, []);
+
+  node.innerHTML = '';
+  node.setAttribute('aria-label', text);
+
+  if (reduced) {
+    node.textContent = text;
+    return { destroy() {} };
+  }
+
+  const lettersWrap = document.createElement('span');
+  lettersWrap.setAttribute('aria-hidden', 'true');
+  lettersWrap.style.display = 'inline';
+
+  words.forEach((word, wordIndex) => {
+    const wordOffset = wordOffsets[wordIndex] ?? 0;
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'letter-hero-word';
+    wordSpan.style.display = 'inline-block';
+
+    word.split('').forEach((letter, letterIndex) => {
+      const letterSpan = document.createElement('span');
+      letterSpan.className = 'letter-hero-letter';
+      letterSpan.textContent = letter;
+      letterSpan.style.animationDelay = `${(wordOffset + letterIndex) * stagger}ms`;
+      wordSpan.appendChild(letterSpan);
+    });
+
+    if (wordIndex < words.length - 1) {
+      wordSpan.style.marginRight = '0.25em';
+    }
+
+    lettersWrap.appendChild(wordSpan);
+  });
+
+  node.appendChild(lettersWrap);
+  return { destroy() {} };
+}
+
+/* ─── 4. Floating Parallax Icons (from lgwks FloatingIcons) ── */
+
+export interface FloatingIconConfig {
+  x: string; y: string; s: number; r: number; bg: string; speed: number; rot: number;
+}
+
+export function floatingParallax(node: HTMLElement, icons: FloatingIconConfig[]) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return { destroy() {} };
+
+  const refs: (HTMLDivElement | null)[] = [];
+
+  icons.forEach((icon, i) => {
+    const el = document.createElement('div');
+    el.className = 'floating-icon';
+    el.style.left = icon.x;
+    el.style.top = icon.y;
+    el.style.width = `${icon.s}px`;
+    el.style.height = `${icon.s}px`;
+    el.style.borderRadius = `${icon.r}px`;
+    el.style.background = icon.bg;
+    el.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+    node.appendChild(el);
+    refs[i] = el;
+  });
+
+  let ticking = false;
+  let lastY = window.scrollY;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      const velocity = y - lastY;
+      lastY = y;
+      refs.forEach((el, i) => {
+        const icon = icons[i];
+        if (el && icon) {
+          const drift = y * icon.speed;
+          const rot = Math.min(Math.abs(velocity) * 0.35, 14) * icon.rot * Math.sign(velocity || 1);
+          el.style.transform = `translateY(${drift}px) rotate(${rot}deg)`;
+        }
+      });
+      ticking = false;
+    });
+  }
+
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return { destroy() { window.removeEventListener('scroll', onScroll); } };
+}
+
+/* ─── 5. Burst Trigger (from lgwks BurstButton) ──────────── */
+
+export function burstTrigger(node: HTMLElement) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return { destroy() {} };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0]?.isIntersecting) {
+        node.classList.add('burst-active');
+        setTimeout(() => node.classList.remove('burst-active'), 900);
+        observer.disconnect();
+      }
+    },
+    { threshold: 0.8 },
+  );
+  observer.observe(node);
+  return { destroy() { observer.disconnect(); } };
+}
+
+/* ─── 6. Hero Pin Reveal ──────────────────────────────────── */
+
+export function heroPinReveal(node: HTMLElement) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return { destroy() {} };
+
+  let ticking = false;
+  node.style.clipPath = 'inset(50% round 20px)';
+  node.style.transform = 'scale(0.965)';
+  node.style.willChange = 'clip-path, transform';
+
+  function update() {
+    const rect = node.getBoundingClientRect();
+    const viewportH = window.innerHeight;
+    const progress = Math.max(0, Math.min(1, -rect.top / (rect.height || 1)));
+    const clipInset = Math.max(0, 50 - progress * 50);
+    const scale = 0.965 + progress * 0.035;
+    node.style.clipPath = `inset(${clipInset}% round 20px)`;
+    node.style.transform = `scale(${scale})`;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
+
+  return { destroy() { window.removeEventListener('scroll', onScroll); } };
+}

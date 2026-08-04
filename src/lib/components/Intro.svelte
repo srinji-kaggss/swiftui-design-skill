@@ -1,52 +1,31 @@
+<!-- Ported from lgwks PageHero + Section structure -->
 <script lang="ts">
-  import { scrollReveal, lineReveal } from '../actions/scroll';
 </script>
 
-<section class="intro" use:scrollReveal={{ parallax: 30, threshold: 0.15 }}>
-  <div class="intro-inner">
-    <span class="eyebrow">How we work</span>
-    <h2 class="heading" use:lineReveal={0.08}>One team. One conversation. From day one.</h2>
-    <p class="body">
-      Most companies work with separate agencies and teams. When everything needs to
-      come together, nothing quite fits. At Logical Works, strategy, design, and
-      development work at the same table.
-    </p>
-    <p class="body">
-      We start where you are — beginning with your constraints, your complexity,
-      your teams. Discovery and research ground our decisions in insight, not
-      assumptions. The result: systems that work now and adapt as your future unfolds.
-    </p>
+<section class="container">
+  <div class="intro" data-reveal style="max-width: var(--content-width); padding: var(--spacing-x-large) 0;">
+    <span class="is-style-eyebrow">How we work</span>
+    <h2 class="intro__heading" data-reveal>One team. One conversation. From day one.</h2>
+    <div class="intro__body" data-reveal>
+      <p>Most companies work with separate agencies and teams. When everything needs to come together, nothing quite fits. At Logical Works, strategy, design, and development work at the same table.</p>
+      <p style="margin-top: 1.2em;">We start where you are — beginning with your constraints, your complexity, your teams. Discovery and research ground our decisions in insight, not assumptions. The result: systems that work now and adapt as your future unfolds.</p>
+    </div>
   </div>
 </section>
 
 <style>
-  .intro {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
-  }
-
-  .intro-inner {
-    max-width: var(--content-max);
-    padding: var(--space-section-y) 0;
-  }
-
-  .heading {
-    font-family: var(--font-display);
-    font-size: var(--fs-h1);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    margin-bottom: var(--space-12);
+  .intro__heading {
+    font-size: var(--font-size-h1);
+    letter-spacing: var(--letter-spacing-h1);
+    line-height: var(--line-height-h1);
+    margin-bottom: var(--spacing-medium);
     text-wrap: pretty;
   }
-
-  .heading :global(span) { display: inline-block; }
-
-  .body {
-    font-size: var(--fs-lg);
-    line-height: 1.6;
-    color: var(--paper-dim);
-    margin-bottom: var(--space-6);
+  .intro__body {
+    font-size: var(--font-size-large);
+    line-height: var(--line-height-large);
+    color: var(--color-gray-400);
+    max-width: 42rem;
   }
+  .intro__body p + p { margin-top: 1.2em; }
 </style>

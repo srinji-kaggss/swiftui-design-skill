@@ -1,116 +1,54 @@
+<!-- Ported from afternow home.js hero structure + lgwks AnimatedHeroTitle -->
 <script lang="ts">
-  import { lineReveal, echoLayers, scrollParallax } from '../actions/scroll';
+  import { echoLayers, letterTitle, heroPinReveal } from '../actions/scroll';
   import { siteConfig } from '../data/content';
+  import { floatingParallax, type FloatingIconConfig } from '../actions/scroll';
+
+  const icons: FloatingIconConfig[] = [
+    { x: '5%', y: '10%', s: 76, r: 18, bg: 'var(--color-green)', speed: 0.22, rot: 1 },
+    { x: '82%', y: '6%', s: 52, r: 999, bg: 'var(--color-gray-300)', speed: 0.38, rot: -1 },
+    { x: '3%', y: '58%', s: 88, r: 22, bg: 'color-mix(in srgb, var(--color-black) 82%, var(--color-green))', speed: 0.14, rot: 1 },
+    { x: '91%', y: '30%', s: 64, r: 16, bg: 'var(--color-green)', speed: 0.30, rot: -1 },
+    { x: '70%', y: '74%', s: 56, r: 14, bg: 'color-mix(in srgb, var(--color-black) 82%, var(--color-green))', speed: 0.18, rot: 1 },
+    { x: '18%', y: '80%', s: 44, r: 999, bg: 'var(--color-gray-300)', speed: 0.26, rot: -1 },
+    { x: '88%', y: '60%', s: 80, r: 20, bg: 'var(--color-green)', speed: 0.10, rot: 1 },
+  ];
 </script>
 
-<section id="top" class="hero">
-  <div class="hero-echo" use:echoLayers={{ colors: ['var(--echo-1)', 'var(--echo-2)', 'var(--echo-3)'], intensity: 1.2 }}>
-    <div class="hero-inner">
-      <p class="kicker" use:scrollParallax={0.1}>{siteConfig.name}</p>
-      <h1 class="title" use:lineReveal={0.12}>{siteConfig.tagline}</h1>
-      <p class="lede" use:scrollParallax={0.06}>{siteConfig.description}</p>
-      <div class="actions" use:scrollParallax={0.03}>
-        <a href="#work" class="btn-primary">See our work</a>
-        <a href="#contact" class="btn-secondary">Start a project</a>
+<section class="home-hero" id="top">
+  <div class="home-hero__content" use:echoLayers={{ colors: ['var(--color-purple)', 'var(--color-yellow)', 'var(--color-green)'], intensity: 1.2 }}>
+    <div class="container">
+      <div class="home-hero__inner">
+        <span class="is-style-eyebrow" data-reveal>{siteConfig.name}</span>
+        <h1 class="home-hero__title" use:letterTitle={45}>{siteConfig.tagline}</h1>
+        <p class="home-hero__body" data-reveal>{siteConfig.description}</p>
+        <div class="home-hero__actions" data-reveal>
+          <a href="#work" class="btn btn-color--green" data-cursor data-cursor-text="See work">See our work</a>
+          <a href="#contact" class="btn btn--outline no-icon" data-cursor data-cursor-text="Start">Start a project</a>
+        </div>
       </div>
     </div>
+    <div class="floating-icons" use:floatingParallax={icons} aria-hidden="true"></div>
   </div>
-  <div class="hero-spacer" aria-hidden="true"></div>
+  <div class="home-hero-pin-spacer" aria-hidden="true"></div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-
-  .hero-echo {
-    position: sticky;
-    top: 4rem;
-    width: 100%;
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
-    border-radius: 0.75rem;
-    overflow: visible;
-  }
-
-  .hero-inner {
-    position: relative;
-    z-index: 2;
+  .home-hero__inner {
+    position: relative; z-index: 2;
+    padding: var(--spacing-x-large) 0 var(--spacing-large);
     max-width: 48rem;
-    padding: var(--space-24) 0;
   }
-
-  .kicker {
-    font-family: var(--font-mono);
-    font-size: var(--fs-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    margin-bottom: var(--space-6);
-  }
-
-  .title {
-    font-family: var(--font-display);
-    font-size: var(--fs-display);
-    line-height: 1.05;
-    letter-spacing: -0.05em;
-    font-weight: 700;
-    margin-bottom: var(--space-8);
-    text-wrap: pretty;
-  }
-
-  .title :global(span) {
-    display: inline-block;
-  }
-
-  .lede {
-    font-size: var(--fs-xl);
-    line-height: 1.5;
-    color: var(--paper-dim);
+  .home-hero__body {
+    font-size: var(--font-size-x-large);
+    line-height: var(--line-height-x-large);
+    color: var(--color-gray-400);
     max-width: 36rem;
-    margin-bottom: var(--space-16);
+    margin: var(--spacing-small) 0 var(--spacing-medium-large);
   }
-
-  .actions {
-    display: flex;
-    gap: var(--space-4);
-    flex-wrap: wrap;
-  }
-
-  .btn-primary, .btn-secondary {
-    display: inline-block;
-    padding: 1rem 2rem;
-    font-size: var(--fs-base);
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: -0.02em;
-    transition: all var(--dur-fast) var(--ease-default);
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: var(--ink);
-  }
-
-  .btn-primary:hover { background: var(--paper); }
-
-  .btn-secondary {
-    border: 1px solid var(--paper-faint);
-    color: var(--paper);
-  }
-
-  .btn-secondary:hover { border-color: var(--paper); }
-
-  .hero-spacer {
-    height: 30vh;
-  }
-
-  @media (max-width: 640px) {
-    .hero-spacer { height: 20vh; }
-    .title { font-size: var(--fs-h1); }
+  .home-hero__actions { display: flex; gap: var(--spacing-tiny); flex-wrap: wrap; }
+  .home-hero-pin-spacer { display: none; }
+  @media (min-width: 768px) {
+    .home-hero-pin-spacer { display: block; height: 60vh; }
   }
 </style>

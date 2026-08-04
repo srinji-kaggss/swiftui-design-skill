@@ -1,33 +1,30 @@
 <script lang="ts">
   import { journalPosts } from '../data/content';
-  import { scrollReveal } from '../actions/scroll';
 </script>
 
-<section id="journal" class="journal">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-number">05</span>
-      <h2 class="section-title">Journal</h2>
+<section id="journal" class="container">
+  <div style="padding: var(--spacing-x-large) 0;">
+    <div class="grid" style="margin-bottom: var(--spacing-medium-large);">
+      <div class="col-12">
+        <span class="is-style-eyebrow" data-reveal>Journal</span>
+        <h2 class="section__headline" data-reveal>Thinking out loud.</h2>
+      </div>
     </div>
     <div class="journal-list">
       {#each journalPosts as post, i (post.slug)}
-        <article
-          class="post"
-          use:scrollReveal={{ parallax: 20, threshold: 0.15 }}
-        >
-          <div class="post-info">
-            <span class="post-eyebrow">{post.eyebrow}</span>
-            <h3 class="post-title">{post.title}</h3>
-            <p class="post-excerpt">{post.excerpt}</p>
-            <div class="post-tags">
+        <article class="journal-item" data-reveal data-reveal-batch="true" data-cursor data-cursor-text="Read">
+          <div class="journal-item__info">
+            <span class="journal-item__eyebrow">{post.eyebrow}</span>
+            <h3 class="journal-item__title">{post.title}</h3>
+            <p class="journal-item__excerpt">{post.excerpt}</p>
+            <div class="tag-list">
               {#each post.tags as tag (tag)}
-                <span class="post-tag">{tag}</span>
+                <span>{tag}</span>
               {/each}
             </div>
           </div>
-          <div class="post-meta">
-            <span class="post-date">{post.date}</span>
-            <span class="post-arrow" aria-hidden="true">→</span>
+          <div class="journal-item__meta">
+            <span class="journal-item__date">{post.date}</span>
           </div>
         </article>
       {/each}
@@ -36,110 +33,37 @@
 </section>
 
 <style>
-  .journal {
-    padding: var(--space-section-y) 0;
-    border-top: 1px solid var(--paper-faint);
+  .journal-list { display: grid; gap: 0; }
+  .journal-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--spacing-small) 0;
+    border-bottom: 1px solid var(--color-gray-300);
+    transition: border-color 0.35s var(--default-transition-easing);
+    gap: var(--spacing-small);
   }
-
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 var(--container-gutter);
+  .journal-item:hover { border-bottom-color: var(--color-green); }
+  .journal-item__info { flex: 1; min-width: 0; }
+  .journal-item__eyebrow {
+    font-family: var(--font-mono); font-size: var(--font-size-x-small);
+    text-transform: uppercase; letter-spacing: -0.02em;
+    color: var(--color-gray-400); display: block; margin-bottom: 0.5em;
   }
-
-  .journal-list {
-    display: grid;
-    gap: 0;
+  .journal-item__title {
+    font-size: var(--font-size-h4); font-weight: 500;
+    letter-spacing: var(--letter-spacing-h4); line-height: var(--line-height-h4);
+    margin-bottom: 0.5em;
   }
-
-  .post {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-8) 0;
-    border-bottom: 1px solid var(--paper-faint);
-    transition: border-color var(--dur-base) var(--ease-default);
-    gap: var(--space-6);
+  .journal-item__excerpt {
+    font-size: var(--font-size-base); color: var(--color-gray-400);
+    line-height: 1.5; margin-bottom: var(--spacing-tiny);
   }
-
-  .post:hover {
-    border-bottom-color: var(--accent);
+  .journal-item__meta { flex-shrink: 0; }
+  .journal-item__date {
+    font-family: var(--font-mono); font-size: var(--font-size-x-small);
+    color: var(--color-gray-500);
   }
-
-  .post:hover .post-arrow {
-    color: var(--accent);
-    transform: translateX(8px);
-  }
-
-  .post-info {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .post-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--paper-dim);
-    display: block;
-    margin-bottom: var(--space-2);
-  }
-
-  .post-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h4);
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: var(--space-3);
-  }
-
-  .post-excerpt {
-    font-size: var(--fs-base);
-    color: var(--paper-dim);
-    line-height: 1.5;
-    margin-bottom: var(--space-4);
-  }
-
-  .post-tags {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-
-  .post-tag {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--paper-faint);
-    color: var(--paper-dim);
-  }
-
-  .post-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    flex-shrink: 0;
-  }
-
-  .post-date {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--paper-faint);
-  }
-
-  .post-arrow {
-    font-size: 1.5rem;
-    color: var(--paper-faint);
-    transition: transform var(--dur-base) var(--ease-default), color var(--dur-base) var(--ease-default);
-  }
-
-  @media (max-width: 640px) {
-    .post {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .post-meta { align-self: flex-end; }
+  @media (max-width: 768px) {
+    .journal-item { flex-direction: column; align-items: flex-start; }
+    .journal-item__meta { align-self: flex-end; }
   }
 </style>
