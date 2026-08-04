@@ -17,6 +17,7 @@
   import Contact from './lib/components/Contact.svelte';
   import Footer from './lib/components/Footer.svelte';
   import LegalPage from './lib/components/LegalPage.svelte';
+  import ReviewMode from './lib/components/ReviewMode.svelte';
 
   import { privacySections, privacyHero, privacySummary, privacyCta, privacyRelatedLinks } from './lib/data/legal/privacy';
   import { termsHero, termsSummary, termsCta, termsSupplementalLinks, termsRelatedLinks, termsMarkdown } from './lib/data/legal/terms';
@@ -116,3 +117,4 @@
 {/if}
 
 <Footer />
+<ReviewMode />
