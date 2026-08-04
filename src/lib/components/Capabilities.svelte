@@ -11,9 +11,9 @@
         <h2 class="section__headline" data-reveal>Capabilities built for the full arc of a product.</h2>
       </div>
     </div>
-    <div class="grid">
+    <div class="grid grid-columns--3" style="gap: var(--spacing-x-small);">
       {#each services as service, i (service.slug)}
-        <article class="service-card col-4" data-reveal data-reveal-batch="true">
+        <article class="service-card" data-reveal data-reveal-batch="true">
           <span class="service-card__eyebrow">{service.eyebrow}</span>
           <h3 class="service-card__title">{service.title}</h3>
           <p class="service-card__desc">{service.description}</p>

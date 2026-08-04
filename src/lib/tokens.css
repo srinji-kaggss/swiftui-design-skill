@@ -129,6 +129,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeSpeed;
   scrollbar-gutter: stable;
+  overflow-x: hidden;
 }
 
 body {

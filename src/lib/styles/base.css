@@ -173,7 +173,7 @@
 
 /* ── HERO ── */
 .home-hero { padding: 0 var(--grid-padding-x); position: relative; }
-.home-hero__content { border-radius: 0.75rem; overflow: hidden; position: relative; }
+.home-hero__content { border-radius: 0.75rem; position: relative; }
 .home-hero__title { font-family: var(--font-secondary); font-size: var(--font-size-display-1); letter-spacing: var(--letter-spacing-display-1); line-height: var(--line-height-display-1); margin-bottom: 0.5em; max-width: 16ch; }
 .home-content { background-color: var(--color-black); border-bottom-left-radius: var(--site-content-border-radius); border-bottom-right-radius: var(--site-content-border-radius); padding-top: var(--spacing-medium-large); position: relative; z-index: 10; }
 @keyframes heroMediaReveal { 0% { clip-path: inset(50% round 20px); transform: scale(0.965); } 100% { clip-path: inset(0 round 20px); transform: scale(1); } }

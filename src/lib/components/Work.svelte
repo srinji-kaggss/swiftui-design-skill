@@ -15,13 +15,15 @@
       {#each caseStudies as cs, i (cs.slug)}
         <article class="archive-item-work" data-reveal data-reveal-batch="true" data-cursor data-cursor-text="View">
           <div class="archive-item-work__feat-media">
-            <div class="work-media-placeholder" style="--bg-{i}: var(--color-gray-{200 + (i % 3) * 100})">
-              <div class="work-media-inner" style="background: hsl({i * 60}, 15%, 12%)"></div>
+            <div class="work-media-placeholder" style="background: hsl({i * 45}, 20%, 14%);">
+              <span class="work-media-label">{cs.client}</span>
+              <span class="work-media-tag">{cs.category}</span>
             </div>
           </div>
           <div class="archive-item-work__content">
             <div class="tag-list" style="margin-bottom: var(--spacing-3-x-small)">
-              <span class="archive-item-work__service">{cs.category}</span>
+              <span>{cs.category}</span>
+              <span>{cs.year}</span>
             </div>
             <h3 class="archive-item-work__title">{cs.client} — {cs.title}</h3>
             <p class="archive-item-work__description">{cs.body}</p>
@@ -65,13 +67,49 @@
     grid-template-columns: 1fr;
   }
   @media (min-width: 768px) { .home-work__grid { grid-template-columns: 1fr 1fr; } }
+
+  /* FIX: parent had display:flex but child had no width — collapsed to 0 */
+  .archive-item-work__feat-media {
+    border-radius: 0.75rem;
+    display: block;          /* changed from flex to block */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: var(--spacing-3-x-small);
+  }
+
+  /* FIX: added width:100% so it fills parent, aspect-ratio gives height */
   .work-media-placeholder {
-    aspect-ratio: 4/3; border-radius: 0.75rem; overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--spacing-small);
+    position: relative;
+    transition: transform 0.2s linear;
   }
-  .work-media-inner {
-    width: 100%; height: 100%; transition: transform 0.2s linear;
+  .archive-item-work:hover .work-media-placeholder { transform: scale(1.05); }
+
+  .work-media-label {
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h4);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-h4);
+    line-height: var(--line-height-h4);
+    color: var(--color-white);
+    z-index: 1;
   }
-  .archive-item-work:hover .work-media-inner { transform: scale(1.05); }
+  .work-media-tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-x-small);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--color-gray-400);
+    z-index: 1;
+  }
+
   .case-details summary { list-style: none; }
   .case-details summary::-webkit-details-marker { display: none; }
   .case-details[open] summary { margin-bottom: var(--spacing-tiny); }

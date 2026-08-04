@@ -10,9 +10,9 @@
         <h2 class="section__headline" data-reveal>The people behind the work.</h2>
       </div>
     </div>
-    <div class="grid">
+    <div class="grid grid-columns--2" style="gap: var(--spacing-x-small);">
       {#each founders as founder, i (founder.name)}
-        <article class="founder-card col-6" data-reveal data-reveal-batch="true">
+        <article class="founder-card" data-reveal data-reveal-batch="true">
           <div class="founder-card__avatar">{founder.initials}</div>
           <div class="founder-card__info">
             <h3 class="founder-card__name">{founder.name}</h3>
@@ -43,8 +43,6 @@
     background: var(--color-gray-200); border-radius: 0.5rem;
     display: flex; align-items: center; justify-content: center;
     border: 1px solid var(--color-green);
-  }
-  .founder-card__avatar {
     font-family: var(--font-mono); font-size: var(--font-size-large);
     font-weight: 700; color: var(--color-green); letter-spacing: -0.02em;
   }

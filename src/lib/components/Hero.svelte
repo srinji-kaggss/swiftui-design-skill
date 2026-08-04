@@ -1,6 +1,6 @@
 <!-- Ported from afternow home.js hero structure + lgwks AnimatedHeroTitle -->
 <script lang="ts">
-  import { echoLayers, letterTitle, heroPinReveal } from '../actions/scroll';
+  import { echoLayers, letterTitle } from '../actions/scroll';
   import { siteConfig } from '../data/content';
   import { floatingParallax, type FloatingIconConfig } from '../actions/scroll';
 
@@ -16,6 +16,7 @@
 </script>
 
 <section class="home-hero" id="top">
+  <!-- echo layers sit on .home-hero itself, not clipped by overflow -->
   <div class="home-hero__content" use:echoLayers={{ colors: ['var(--color-purple)', 'var(--color-yellow)', 'var(--color-green)'], intensity: 1.2 }}>
     <div class="container">
       <div class="home-hero__inner">
@@ -34,6 +35,12 @@
 </section>
 
 <style>
+  /* FIX: removed overflow:hidden — it was clipping echo layers */
+  .home-hero__content {
+    border-radius: 0.75rem;
+    position: relative;
+  }
+  /* FIX: widened from 768px to 48rem to match original hero max-width */
   .home-hero__inner {
     position: relative; z-index: 2;
     padding: var(--spacing-x-large) 0 var(--spacing-large);

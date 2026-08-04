@@ -10,9 +10,9 @@
         <h2 class="section__headline" data-reveal>Our journey and impact.</h2>
       </div>
     </div>
-    <div class="grid">
+    <div class="grid grid-columns--2" style="gap: var(--spacing-x-small);">
       {#each stats as stat (stat.label)}
-        <div class="stat-card col-3" data-reveal data-reveal-batch="true">
+        <div class="stat-card" data-reveal data-reveal-batch="true">
           <div class="stat-card__value">{stat.value}</div>
           <div class="stat-card__label">{stat.label}</div>
         </div>
