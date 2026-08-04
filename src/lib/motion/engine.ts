@@ -409,32 +409,32 @@ export async function worldBuild(scope: {
 
   // Beat 01: field of loose strokes appears
   await motionAnimate(parts, { opacity: [0, 0.9] }, {
-    duration: 0.7,
-    delay: stagger(0.018),
+    duration: 0.4,
+    delay: stagger(0.012),
     easing: EASE
   }).finished;
 
   // Field fades as halves arrive
-  motionAnimate(field, { opacity: [0.9, 0.12] }, { duration: 1.1, easing: EASE });
+  motionAnimate(field, { opacity: [0.9, 0.12] }, { duration: 0.6, easing: EASE });
 
   // Beat 02: lobes appear, halves travel in and meet on the seam
-  motionAnimate(lobes, { opacity: [0, 1] }, { duration: 0.4 });
+  motionAnimate(lobes, { opacity: [0, 1] }, { duration: 0.25 });
   await motionAnimate(
     [lobeL, lobeR] as HTMLElement[],
     { transform: 'translateX(0px)' },
-    { duration: 0.9, easing: EASE_SEAM }
+    { duration: 0.5, easing: EASE_SEAM }
   ).finished;
 
   // Node appears at the meeting point
-  motionAnimate(nodeDot, { opacity: [0, 1] }, { duration: 0.4 });
+  motionAnimate(nodeDot, { opacity: [0, 1] }, { duration: 0.2 });
 
   // Beat 03: wordmark appears and draws itself
-  motionAnimate(wrap, { opacity: [0, 1] }, { duration: 0.3 });
+  motionAnimate(wrap, { opacity: [0, 1] }, { duration: 0.15 });
   await motionAnimate(strokes, {
     strokeDashoffset: 0
   }, {
-    duration: 0.9,
-    delay: stagger(0.085),
+    duration: 0.5,
+    delay: stagger(0.05),
     easing: EASE_SEAM
   }).finished;
 

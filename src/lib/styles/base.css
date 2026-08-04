@@ -238,32 +238,26 @@ h1, h2, h3, h4, h5, h6 {
   border-left-color: var(--color-brand);
 }
 
-/* ── CUSTOM CURSOR ── */
-.custom-cursor {
-  backface-visibility: hidden; left: 0; opacity: 0;
-  pointer-events: none; position: fixed; top: 0;
-  transform: translate(-50%, -50%); user-select: none; z-index: 999;
+/* ── CUSTOM CURSOR (dot+ring, always visible) ── */
+.cursor-dot, .cursor-ring {
+  pointer-events: none; position: fixed; top: 0; left: 0;
+  border-radius: 50%; z-index: 999; will-change: transform;
 }
-@media (hover: none) { .custom-cursor { display: none !important; } }
-.custom-cursor__dot {
-  width: 8px; height: 8px; border-radius: 50%;
+.cursor-dot {
+  width: 6px; height: 6px;
   background: var(--color-brand);
-  transition: transform var(--duration-fast) var(--ease-standard);
+  transition: transform var(--duration-fast) var(--ease-seam);
 }
-.custom-cursor__content {
-  align-items: center; background: var(--color-ink);
-  clip-path: inset(0 100% 0 0); color: var(--color-bg);
-  display: flex; font-family: var(--font-mono);
-  font-size: var(--text-small); line-height: 1;
-  padding: 0.3em 0.8em; text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
-  transform: translate(-50%); transition: clip-path var(--duration-fast) var(--ease-standard);
-  border-radius: var(--radius-pill);
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--color-brand);
+  opacity: 0.6;
+  transition: transform var(--duration-standard) var(--ease-seam), opacity var(--duration-fast) var(--ease-standard);
 }
-.custom-cursor__text { flex: 1; }
-.custom-cursor.is-visible { opacity: 1; }
-.custom-cursor.is-visible .custom-cursor__content { clip-path: inset(0 0 0 0); }
+.cursor-ring:hover { opacity: 1; }
+@media (hover: none) { .cursor-dot, .cursor-ring { display: none !important; } }
 .has-custom-cursor { cursor: none !important; }
+.has-custom-cursor a, .has-custom-cursor button { cursor: none !important; }
 
 /* ── PRELOADER ── */
 .page-load-veil {
@@ -404,3 +398,14 @@ h1, h2, h3, h4, h5, h6 {
 /* ── WORDMARK ── */
 .lw-wordmark { display: block; }
 .lw-wordmark path { will-change: stroke-dashoffset; }
+
+/* ── LEGAL MARKDOWN ── */
+.legal-markdown h1 { font-size: var(--text-h1); margin-bottom: var(--space-md); }
+.legal-markdown h2 { font-size: var(--text-h2); margin-top: var(--space-lg); margin-bottom: var(--space-sm); scroll-margin-top: 100px; }
+.legal-markdown h3 { font-size: var(--text-h3); margin-top: var(--space-md); margin-bottom: var(--space-xs); color: var(--color-ink); }
+.legal-markdown p { font-size: var(--text-body); line-height: 1.7; color: var(--color-muted-ink); margin-bottom: var(--space-xs); max-width: 70ch; }
+.legal-markdown ul { list-style: none; padding: 0; margin-bottom: var(--space-sm); }
+.legal-markdown li { font-size: var(--text-body); line-height: 1.7; color: var(--color-muted-ink); padding-left: 1.5rem; position: relative; margin-bottom: var(--space-3xs); max-width: 68ch; }
+.legal-markdown li::before { content: '—'; position: absolute; left: 0; color: var(--color-brand); }
+.legal-markdown strong { color: var(--color-ink); font-weight: var(--weight-semibold); }
+.legal-markdown a { color: var(--color-brand); text-decoration: underline; text-underline-offset: 0.15em; }

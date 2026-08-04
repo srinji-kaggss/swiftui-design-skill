@@ -1,12 +1,17 @@
-<!-- LWDS CustomCursor — clip-path reveal, data-cursor attrs -->
+<!-- LWDS CustomCursor — dot+ring, always visible, expands on [data-cursor] -->
 <script lang="ts">
-  let x = $state(-100);
-  let y = $state(-100);
-  let isVisible = $state(false);
-  let cursorText = $state('');
+  let dotX = $state(-100);
+  let dotY = $state(-100);
+  let ringX = $state(-100);
+  let ringY = $state(-100);
+  let isHovering = $state(false);
   let isDisabled = $state(false);
-  let rafId = 0;
-  let pending = { x: -100, y: -100 };
+  let isDown = $state(false);
+
+  let dotRaf = 0;
+  let ringRaf = 0;
+  let dotPending = { x: -100, y: -100 };
+  let ringPending = { x: -100, y: -100 };
 
   $effect(() => {
     const mqlMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -24,54 +29,89 @@
     check();
 
     function onMouseMove(e: MouseEvent) {
-      pending = { x: e.clientX, y: e.clientY };
-      if (rafId === 0) {
-        rafId = requestAnimationFrame(() => {
-          x = pending.x; y = pending.y; rafId = 0;
+      dotPending = { x: e.clientX, y: e.clientY };
+      ringPending = { x: e.clientX, y: e.clientY };
+
+      if (dotRaf === 0) {
+        dotRaf = requestAnimationFrame(() => {
+          dotX = dotPending.x;
+          dotY = dotPending.y;
+          dotRaf = 0;
+        });
+      }
+      // Ring lags behind with spring easing
+      if (ringRaf === 0) {
+        ringRaf = requestAnimationFrame(() => {
+          ringX = ringX + (ringPending.x - ringX) * 0.18;
+          ringY = ringY + (ringPending.y - ringY) * 0.18;
+          ringRaf = 0;
+          // Keep animating until ring catches up
+          if (Math.abs(ringPending.x - ringX) > 0.5 || Math.abs(ringPending.y - ringY) > 0.5) {
+            ringRaf = requestAnimationFrame(() => {
+              ringX = ringX + (ringPending.x - ringX) * 0.18;
+              ringY = ringY + (ringPending.y - ringY) * 0.18;
+              ringRaf = 0;
+            });
+          }
         });
       }
     }
 
-    function onMouseEnter(e: MouseEvent) {
+    function onPointerOver(e: PointerEvent) {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const hasCursor = target.closest<HTMLElement>('[data-cursor]');
-      if (!hasCursor) return;
-      isVisible = true;
-      cursorText = hasCursor.dataset.cursorText ?? '';
+      const interactive = target.closest<HTMLElement>('a, button, [data-cursor], [role="button"], input, textarea, select');
+      if (interactive) {
+        isHovering = true;
+      }
     }
 
-    function onMouseLeave(e: MouseEvent) {
+    function onPointerOut(e: PointerEvent) {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      if (target.closest('[data-cursor]')) isVisible = false;
+      const interactive = target.closest<HTMLElement>('a, button, [data-cursor], [role="button"], input, textarea, select');
+      if (interactive) {
+        isHovering = false;
+      }
     }
+
+    function onDown() { isDown = true; }
+    function onUp() { isDown = false; }
 
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseenter', onMouseEnter, true);
-    document.addEventListener('mouseleave', onMouseLeave, true);
+    document.addEventListener('pointerover', onPointerOver);
+    document.addEventListener('pointerout', onPointerOut);
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('mouseup', onUp);
     mqlMotion.addEventListener('change', check);
     mqlHover.addEventListener('change', check);
 
     return () => {
       document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseenter', onMouseEnter, true);
-      document.removeEventListener('mouseleave', onMouseLeave, true);
+      document.removeEventListener('pointerover', onPointerOver);
+      document.removeEventListener('pointerout', onPointerOut);
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('mouseup', onUp);
       mqlMotion.removeEventListener('change', check);
       mqlHover.removeEventListener('change', check);
       document.body.classList.remove('has-custom-cursor');
-      if (rafId) cancelAnimationFrame(rafId);
+      if (dotRaf) cancelAnimationFrame(dotRaf);
+      if (ringRaf) cancelAnimationFrame(ringRaf);
     };
   });
 </script>
 
 {#if !isDisabled}
+  <!-- Ring (lagged) -->
   <div
-    class="custom-cursor {isVisible ? 'is-visible' : ''}"
-    style="transform: translate3d({x}px, {y}px, 0) translate(-50%, -50%);"
-  >
-    <div class="custom-cursor__content">
-      {#if cursorText}<div class="custom-cursor__text">{cursorText}</div>{/if}
-    </div>
-  </div>
+    class="cursor-ring"
+    style="transform: translate3d({ringX}px, {ringY}px, 0) translate(-50%, -50%) scale({isHovering ? 1.6 : isDown ? 0.7 : 1});"
+    aria-hidden="true"
+  ></div>
+  <!-- Dot (instant) -->
+  <div
+    class="cursor-dot"
+    style="transform: translate3d({dotX}px, {dotY}px, 0) translate(-50%, -50%) scale({isHovering ? 0 : isDown ? 1.3 : 1});"
+    aria-hidden="true"
+  ></div>
 {/if}

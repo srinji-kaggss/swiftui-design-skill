@@ -20,7 +20,7 @@
     // Generate the field: loose strokes echoing the glyph vocabulary
     const rnd = (() => { let h = 7; return () => (h = (h * 1103515245 + 12345) % 2147483648) / 2147483648; })();
     let d = '';
-    for (let i = 0; i < 46; i++) {
+    for (let i = 0; i < 30; i++) {
       const x = 40 + rnd() * 1200, y = 30 + rnd() * 500, k = rnd();
       d += k < .45 ? `<line x1="${x}" y1="${y}" x2="${x}" y2="${y + 30 + rnd() * 60}"/>`
         : k < .8 ? `<line x1="${x}" y1="${y}" x2="${x + 30 + rnd() * 70}" y2="${y}"/>`
@@ -35,7 +35,7 @@
 
     // Run the world-build
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = prefersReduced ? 80 : 3800;
+    const duration = prefersReduced ? 80 : 2200;
 
     worldBuild({
       field: fieldEl, wrap: wrapEl, lobes: lobesEl,
