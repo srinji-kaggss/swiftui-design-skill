@@ -46,7 +46,7 @@ export function scrollRevealAll(node: HTMLElement) {
   elements.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(28px)';
-    el.style.transition = `opacity var(--duration-standard) var(--ease-standard), transform var(--duration-standard) var(--ease-standard)`;
+    el.style.transition = `opacity var(--duration-reveal) var(--ease-deliberate), transform var(--duration-reveal) var(--ease-deliberate)`;
   });
 
   const cleanups: (() => void)[] = [];

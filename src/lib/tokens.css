@@ -168,4 +168,6 @@
   --duration-scene:900ms;
   --stagger-step:80ms;
   --stagger-scene:340ms;
+  --duration-reveal:560ms;
+  --ease-deliberate: cubic-bezier(.16,1,.3,1);
 }
