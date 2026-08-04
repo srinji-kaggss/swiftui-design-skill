@@ -3,6 +3,7 @@
   import './lib/styles/base.css';
   import { scrollRevealAll } from './lib/motion/engine';
   import { initLocale } from './lib/i18n/context.svelte';
+  import { initTheme } from './lib/theme.svelte';
   import { getRoute } from './lib/router.svelte';
   import Preloader from './lib/components/Preloader.svelte';
   import CustomCursor from './lib/components/CustomCursor.svelte';
@@ -24,6 +25,7 @@
   import { emailTermsSections, emailTermsHero, emailTermsSummary } from './lib/data/legal/email-terms';
   import { sellersTermsSections, sellersTermsHero, sellersTermsSummary } from './lib/data/legal/sellers-terms';
 
+  initTheme();
   initLocale();
   const router = getRoute();
 

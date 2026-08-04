@@ -1,12 +1,15 @@
-<!-- LWDS TopNav pattern: Seam mark + constructed wordmark, spaced-caps nav -->
+<!-- LWDS TopNav pattern: Seam mark + constructed wordmark, spaced-caps nav + theme toggle -->
 <script lang="ts">
   import { siteConfig } from '../data/content';
   import { renderWordmark } from '../motion/engine';
   import { onMount } from 'svelte';
+  import { useTheme } from '../theme.svelte';
 
   let scrolled = $state(false);
   let menuOpen = $state(false);
   let wmSlot: HTMLElement;
+
+  const theme = useTheme();
 
   onMount(() => {
     wmSlot.innerHTML = renderWordmark({ text: siteConfig.name, className: 'lw-wordmark', color: 'currentColor', seam: false });
@@ -40,12 +43,51 @@
         <li><a href={link.href} onclick={() => menuOpen = false}>{link.label}</a></li>
       {/each}
     </ul>
-    <a href="#contact" class="btn btn--primary btn--sm" onclick={() => menuOpen = false}>Contact</a>
+    <div class="site-header__actions">
+      <button
+        class="theme-toggle"
+        onclick={() => theme.toggle()}
+        aria-label="Toggle dark/light mode"
+        title={theme.isDark ? 'Switch to light' : 'Switch to dark'}
+      >
+        {#if theme.isDark}
+          <!-- Sun icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        {:else}
+          <!-- Moon icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        {/if}
+      </button>
+      <a href="#contact" class="btn btn--primary btn--sm" onclick={() => menuOpen = false}>Contact</a>
+    </div>
   </nav>
-  <button class="mobile-toggle" onclick={toggleMenu} aria-label="Menu">
-    <span class:open={menuOpen}></span>
-    <span class:open={menuOpen}></span>
-  </button>
+  <div class="mobile-actions">
+    <button
+      class="theme-toggle theme-toggle--mobile"
+      onclick={() => theme.toggle()}
+      aria-label="Toggle dark/light mode"
+    >
+      {#if theme.isDark}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      {:else}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      {/if}
+    </button>
+    <button class="mobile-toggle" onclick={toggleMenu} aria-label="Menu">
+      <span class:open={menuOpen}></span>
+      <span class:open={menuOpen}></span>
+    </button>
+  </div>
 </header>
 
 {#if menuOpen}
@@ -80,6 +122,9 @@
   .site-header__navigation {
     display: flex; align-items: center; gap: var(--space-lg);
   }
+  .site-header__actions {
+    display: flex; align-items: center; gap: var(--space-sm);
+  }
   .menu {
     display: flex; gap: var(--space-lg); list-style: none; padding: 0; margin: 0;
   }
@@ -92,13 +137,27 @@
   }
   .menu a:hover { border-bottom-color: var(--color-brand); }
 
+  .theme-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: var(--radius-control);
+    background: transparent; border: 1px solid var(--color-border);
+    color: var(--color-ink); cursor: pointer;
+    transition: border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+  .theme-toggle:hover { border-color: var(--color-brand); color: var(--color-brand); }
+
+  .mobile-actions { display: none; }
   .mobile-toggle { display: none; }
   @media (max-width: 999px) {
     .site-header__navigation { display: none; }
+    .mobile-actions {
+      display: flex; align-items: center; gap: var(--space-2xs);
+      position: fixed; top: var(--space-sm); right: var(--grid-padding-x); z-index: 200;
+    }
+    .theme-toggle--mobile { display: flex; }
     .mobile-toggle {
       display: flex; flex-direction: column; gap: 5px;
       background: none; border: none; cursor: pointer; padding: var(--space-2xs);
-      position: fixed; top: var(--space-sm); right: var(--grid-padding-x); z-index: 200;
     }
     .mobile-toggle span {
       display: block; width: 24px; height: 2px;
